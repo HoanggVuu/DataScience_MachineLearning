@@ -225,7 +225,9 @@ OPERATIONS PRESERVING CONVEXITY FOR FUNCTIONS
    Property: Minimizing over some variables preserves convexity
    Formula: If f(x,y) is convex in (x,y) and C is convex, then
    g(x) = inf{f(x,y) | y ∈ C} is convex
-   
+
+   (fix the x and minimize f(x,y) with y as variable and x as constant, take the derivative respect to y)
+
    Examples:
    • Distance to convex set: dist(x,S) = inf{||x-y|| | y ∈ S}
    • Optimal value function in convex optimization
@@ -233,8 +235,28 @@ OPERATIONS PRESERVING CONVEXITY FOR FUNCTIONS
    • Legendre-Fenchel conjugate: f*(y) = sup{yᵀx - f(x) | x ∈ dom f}
 
 6. PERSPECTIVE FUNCTION
+   --------
+   --------
+   Definition:                                                                 
+      Let f: ℝⁿ → ℝ ∪ {+∞}. The perspective of f is                            
+      persp f : ℝⁿ × ℝ₊₊ → ℝ ∪ {+∞},                                            
+      persp f(x, t) = t · f(x / t)    for t > 0.
+
+      (the · means dot product - Tich Vo Huong in vietnamese)                       
+                                                                              
+   Domain:                                                                     
+      {(x, t) | t > 0 and (x / t) ∈ dom f}
+
+   Example (quadratic): 
+      f(u) = ‖u‖₂²  
+      persp f(x, t) = t · ‖x / t‖₂²                                                        
+                    = ‖x‖₂² / t
+      
+      (valid for t > 0) 
+   --------
+   --------
    Property: The perspective of a convex function is convex
-   Formula: If f: ℝⁿ → ℝ is convex, then g(x,t) = tf(x/t) is convex on 
+   Formula: If f: ℝⁿ → ℝ is convex, then g(x,t) = t · f(x/t) is convex on 
    {(x,t) | x/t ∈ dom f, t > 0}
    
    Examples:
@@ -284,7 +306,29 @@ SPECIAL CASES AND EXTENSIONS
 3. CONVEX CONJUGATE
    Property: The convex conjugate preserves convexity
    Formula: f*(y) = sup{yᵀx - f(x) | x ∈ dom f}
+   -----
+   -----
+   Example 1:
+      If f(x) = x², then f*(y) = supₓ (xy - x²). 
+      We see that the sup over x is attained when y - 2x = 0, (get derivative respect to x => y - 2x)
+      => x = y/2
+      
+      Then, replace x = y/2 back to xy - x²
+      => so we have f*(y) = y² / 4.  
+   -----
+   -----
+   Example 2: 
+            x is a vector where x1, x2, x3, ... represents the quantity of product 1, 2, 3, ...
+            y is a vector where y1, y2, y3, ... represents the market price of product 1, 2, 3, ... (usually fixed)
+            f(x) is the function to calculate the total cost of production
 
+   => yᵀx will be the gross revenue
+   => yᵀx - f(x) will be the net profit
+   
+   => f*(y) = sup{yᵀx - f(x) | x ∈ dom f} means maximize the profit over product quantity x when the market price y is given
+   -----
+   -----
+   
 4. INDICATOR FUNCTIONS
    Property: The indicator function of a convex set is convex
    Formula: Iᴄ(x) = 0 if x ∈ C, +∞ if x ∉ C
@@ -338,3 +382,18 @@ END OF DOCUMENT
 ================================================================================
 
 '''
+
+import sympy as sp
+import numpy as np
+
+x = sp.symbols("x")
+y = sp.symbols("y")
+x_t = sp.symbols("x_t")
+y_t = sp.symbols("y_t")
+A = sp.symbols("A")
+B = sp.symbols("B")
+Bt = sp.symbols("Bt")
+C = sp.symbols("C")
+
+result = np.transpose(np.array([x_t, y_t])) @ np.array([[A, B], [Bt, C]]) @ np.array([x, y])
+print(sp.simplify(result))
