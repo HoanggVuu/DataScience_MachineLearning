@@ -70,7 +70,7 @@ print(os.uname())
 # Example of using os.uname() to get system information
 system_info = os.uname()
 print(f"System: {system_info.sysname}") # System: Linux
-print(f"Node Name: {system_info.nodename}") # Node Name: fedora
+print(f"Node Name: {system_info.nodename}") # Node Name: '192.168.1.32.non-exists.ptr.local'
 print(f"Release: {system_info.release}") # Release: 6.15.4-200.fc42.x86_64
 print(f"Version: {system_info.version}") # Version: #1 SMP PREEMPT_DYNAMIC Fri Jun 27 15:32:46 UTC 2025
 print(f"Machine: {system_info.machine}") # Machine: x86_64
@@ -82,7 +82,7 @@ print(f"Machine: {system_info.machine}") # Machine: x86_64
 
 # os.cpu_count() returns the number of CPUs in the system.
 
-print(os.cpu_count()) # 32 
+print(os.cpu_count()) # 32
 # 32 (threads)
 # 16 (cores)
 
@@ -210,7 +210,7 @@ try:
     os.mkdir('parent_dir/child_dir')
 except Exception as e:
     logger.error(e)
-# 2025-07-17 13:16:58.516 | ERROR    | __main__:<module>:4 - [Errno 2] No such file or directory: 'parent_dir/child_dir'
+# | ERROR    | __main__:<module>:4 - [Errno 2] No such file or directory: 'parent_dir/child_dir'
 # => use os.makedirs()
 
 
@@ -231,14 +231,14 @@ try:
     os.makedirs('parent_dir/child_dir/grandchild_dir')
 except Exception as e:
     logger.error(e)
-# 2025-07-17 13:20:32.822 | ERROR    | __main__:<module>:4 - [Errno 17] File exists: 'parent_dir/child_dir/grandchild_dir'
+# | ERROR    | __main__:<module>:4 - [Errno 17] File exists: 'parent_dir/child_dir/grandchild_dir'
 
 
 ################
 ## os.rmdir() ##
 ################
 
-# os.rmdir(path) removes (deletes) the directory at the specified path.
+# os.rmdir(path) removes (deletes) the EMPTY directory at the specified path.
 # Note: This will raise an error if the directory is not empty.
 
 # Remove an empty directory
@@ -250,7 +250,7 @@ try:
     os.rmdir('parent_dir')
 except Exception as e:
     logger.error(e)
-# 2025-07-17 13:24:55.624 | ERROR    | __main__:<module>:4 - [Errno 39] Directory not empty: 'parent_dir'
+# | ERROR    | __main__:<module>:4 - [Errno 39] Directory not empty: 'parent_dir'
 
 
 #####################
@@ -284,7 +284,7 @@ try:
     os.remove('./non_existing_file.txt')
 except Exception as e:
     logger.error(e)
-# 2025-07-17 13:39:24.056 | ERROR    | __main__:<module>:4 - [Errno 2] No such file or directory: './non_existing_file.txt'
+# | ERROR    | __main__:<module>:4 - [Errno 2] No such file or directory: './non_existing_file.txt'
 
 
 #################
@@ -355,8 +355,8 @@ os.popen('ls -l .') # <os._wrap_close object at 0x7f4da1e243b0>
                     # Only an object is returned, not the output of the command.
 
 ## Open a pipe to the 'ls' command and READ its output ##
-with os.popen('ls -l .', "r") as pipe:
-    directory_contents = pipe.read()  # Store the output of the command in a variable
+with os.popen('ls -l .', "r") as file_pointer:
+    directory_contents = file_pointer.read()  # Store the output of the command in a variable
     print(directory_contents)  # Display the output of the 'ls -l .' command
     # total 16
     # drwxrwxrwx. 1 longdpt longdpt 1720 Jul 17 13:27 01_Python_Basic
@@ -370,8 +370,8 @@ with os.popen('ls -l .', "r") as pipe:
 
 ## Open a pipe to the 'sort' command and WRITE to its input ##
 fruits = "orange\napple\nbanana"
-with os.popen("sort", "w") as pipe: 
-    pipe.writelines(fruits) # Write the fruits to the sort command
+with os.popen("sort", "w") as file_pointer: 
+    file_pointer.writelines(fruits) # Write the fruits to the sort command
     # apple
     # banana
     # orange
