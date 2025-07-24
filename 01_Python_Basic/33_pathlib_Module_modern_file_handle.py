@@ -10,10 +10,15 @@ Flow of contents:
 3. Extract path object components: name, suffix, stem, parent, parents, suffix, suffixes, parts, root
 4. Checking path properties: exists(), is_file(), is_dir(), is_symlink(), is_absolute(), is_relative_to()
 5. Get Absolute Path - Path Resolution: resolve(), absolute()
+
 6. Directory and File operations: mkdir(), rmdir(), touch(), symlink_to(), 
                                   unlink() [remove a file or symlink],
-                                  replace() [move and rename a file or directory] 
-                                  
+                                  replace() [move and rename a file or directory],
+                                  shutil.copy() and shutil.copy2() [copy file or directory - file 31_...py]
+
+7. File metadata: stat().st_size, stat().st_mtime, stat().st_ctime, stat().st_atime, stat().st_mode
+
+8. Change file permissions: chmod()
 '''
 
 from os import symlink
@@ -575,7 +580,7 @@ dir_symlink_path.unlink(missing_ok=True)  # Remove the symlink if it exists
 #####################################################
 
 #--------------------------
-## Rename with replace()
+## RENAME with replace()
 #--------------------------
 
 Path.cwd().joinpath('demo_file.txt').touch(exist_ok=True)  # Create a file to rename
@@ -589,3 +594,180 @@ Path.cwd().joinpath('demo_file.txt').replace('renamed_file.txt')  # Rename the f
 Path('./demo_dir').replace('renamed_dir')  # Rename the directory to 'renamed_dir'
 Path.cwd().joinpath('demo_dir').replace('renamed_dir')  # Rename the directory to 'renamed_dir' using joinpath()
 
+
+#--------------------------
+## MOVE with replace()
+#--------------------------
+
+Path.cwd().joinpath('demo_file.txt').touch(exist_ok=True)  # Create a file to move
+Path.cwd().joinpath('demo_dir').mkdir(exist_ok=True)  # Create a directory to move
+Path.cwd().joinpath('destination_dir').mkdir(exist_ok=True)  # Create a destination directory to move to
+
+# Move a file
+Path('./demo_file.txt').replace('./destination_dir/demo_file.txt')  # Move the file
+Path.cwd().joinpath('demo_file.txt').replace('./destination_dir/demo_file.txt')  # Move the file using joinpath()
+
+# Move a directory
+Path('./demo_dir').replace('./destination_dir/demo_dir')  # Move the directory
+Path.cwd().joinpath('demo_dir').replace('./destination_dir/demo_dir')  # Move the directory using joinpath()
+
+
+#--------------------------
+## MOVE and RENAME with replace()
+#--------------------------
+
+# Move and rename the file
+Path('./destination_dir').joinpath('demo_file.txt').replace(Path.cwd() / 'renamed_file.txt')  
+
+# Move and rename the directory
+Path('./destination_dir').joinpath('demo_dir').replace(Path.cwd() / 'renamed_dir')  
+
+
+##############################################################
+## shuti.copy() and shutil.copy2() - Copy file or directory ##
+##############################################################
+
+# Refer to file 31_shutil_os_Module_copy_move_chown_rm_archive_which.py
+
+
+#---------------------------------------------------------------------------------------------------------------#
+#------------------------------------- 7. File metadata - stat() -----------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------#
+
+from pathlib import Path
+
+file_path = Path("/home/longdpt/Documents/Academic/DataScience_MachineLearning/merge_mp4.sh")
+
+
+#################################
+## .stat() - Get file metadata ##
+#################################
+
+print(file_path.stat())
+# os.stat_result(st_mode=33279, st_ino=14945, st_dev=44, st_nlink=1, st_uid=1000, st_gid=1000, st_size=624, st_atime=1753340542, st_mtime=1747632919, st_ctime=1748964340)
+
+
+##########################################
+## .stat().st_size - File size in bytes ##
+##########################################
+
+file_size = file_path.stat().st_size
+print(f"File size: {file_size} bytes")  # File size: 624
+
+
+###############################################
+## .stat().st_mtime - Last modification time ##
+###############################################
+
+file_mtime = file_path.stat().st_mtime
+print(f"Last modification time: {file_mtime}")  # Last modification time: 1747632919.0
+# This is a timestamp in seconds since the epoch (January 1, 1970). 
+# You can convert it to a human-readable format using datetime
+
+from datetime import datetime
+print(f"Last modification time: {datetime.fromtimestamp(file_mtime)}")  # Last modification time: 2025-05-19 12:35:19
+
+
+################################################################
+## .stat().st_ctime - Creation time (or metadata change time) ##
+################################################################
+
+file_ctime = file_path.stat().st_ctime
+print(f"Creation time: {file_ctime}")  # Creation time: 1748964340.0572999
+# This is a timestamp in seconds since the epoch (January 1, 1970). 
+# You can convert it to a human-readable format using datetime
+
+from datetime import datetime
+print(f"Creation time: {datetime.fromtimestamp(file_ctime)}")  # Creation time: 2025-06-03 22:25:40.057300
+
+
+#########################################
+## .stat().st_atime - Last access time ##
+#########################################
+
+file_atime = file_path.stat().st_atime
+print(f"Last access time: {file_atime}")  # Last access time: 1753340542.8413243
+# This is a timestamp in seconds since the epoch (January 1, 1970). 
+# You can convert it to a human-readable format using datetime
+
+from datetime import datetime
+print(f"Last access time: {datetime.fromtimestamp(file_atime)}")  # Last access time: 2025-07-24 14:02:22.841324
+
+
+###############################################
+## .stat().st_mode - File mode (permissions) ##
+###############################################
+
+file_mode = file_path.stat().st_mode
+print(f"File mode: {file_mode}")  # File mode: 33279
+# This is an integer representing the file mode (permissions) in octal format.
+# You can convert it to a human-readable format using the stat module
+
+import stat
+file_mode_human_readable = stat.filemode(file_mode)
+print(f"File mode (human-readable): {file_mode_human_readable}")  # -rwxrwxrwx
+
+
+###############################################
+## Store .stat() in a variable for later use ##
+###############################################
+
+file_stats = file_path.stat()
+
+print(f"File size: {file_stats.st_size} bytes")
+print(f"File size: {file_stats.st_size / (1024**2):.2f} MB")
+
+# Get timestamps
+from datetime import datetime
+mod_time = datetime.fromtimestamp(file_stats.st_mtime)
+access_time = datetime.fromtimestamp(file_stats.st_atime)
+create_time = datetime.fromtimestamp(file_stats.st_ctime)
+
+print(f"Modified: {mod_time}")
+print(f"Accessed: {access_time}")
+print(f"Created: {create_time}")
+
+# File permissions (Unix-like systems)
+import stat
+print(f"Permissions: {oct(file_stats.st_mode)}") # 0o100777
+print(f"Permissions (human-readable): {stat.filemode(file_stats.st_mode)}")  # -rwxrwxrwx
+
+
+#---------------------------------------------------------------------------------------------------#
+#------------------------------ 8. Change file permissions - chmod() -------------------------------#
+#---------------------------------------------------------------------------------------------------#
+
+from pathlib import Path
+
+cwd_path = Path.cwd()
+
+# Add execute permission to a file
+cwd_path.joinpath("download_youtube_commandline.sh").chmod(0o755)
+
+
+# Remove execute permission, retain read and write permissions only
+cwd_path.joinpath("download_youtube_commandline.sh").chmod(0o644)
+
+
+'''
+Octal    Symbolic     Common Use
+-----    --------     ----------
+0o755    rwxr-xr-x    Executable scripts/programs
+0o644    rw-r--r--    Text files
+0o700    rwx------    Private configs/keys
+0o4755   rwsr-xr-x    SUID root helper
+0o1777   rwxrwxrwt    World-writable directory with sticky (e.g., /tmp)
+0o400    r--------    Read-only files
+0o200    -w-------    Write-only files
+0o100    --x------    Execute-only files (rare)
+0o000    ---------    No permissions
+0o600    rw-------    Private files (read/write only for owner)
+0o300    -wx------    Write and execute only for owner
+0o444    r--r--r--    Read-only files for everyone
+0o222    -w--w--w-    Write-only files for everyone
+0o111    --x--x--x    Execute-only files for everyone
+0o555    r-xr-xr-x    Read and execute files for everyone
+0o333    -wx-wx-wx    Write and execute files for everyone
+0o666    -rw-rw-rw-    Read and write files for everyone
+0o777    rwxrwxrwx    Read, write, and execute files for everyone  
+'''

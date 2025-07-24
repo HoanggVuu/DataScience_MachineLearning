@@ -502,6 +502,29 @@ os.chmod('./demo_permission.sh', 0o755)  # Change permissions to make it executa
 os.system('ls -l ./demo_permission.sh')  # Check the file permissions after changing
 # -rwxr-xr-x. 1 longdpt longdpt 20 Jul 18 11:26 ./demo_permission.sh
 
+'''
+Octal    Symbolic     Common Use
+-----    --------     ----------
+0o755    rwxr-xr-x    Executable scripts/programs
+0o644    rw-r--r--    Text files
+0o700    rwx------    Private configs/keys
+0o4755   rwsr-xr-x    SUID root helper
+0o1777   rwxrwxrwt    World-writable directory with sticky (e.g., /tmp)
+0o400    r--------    Read-only files
+0o200    -w-------    Write-only files
+0o100    --x------    Execute-only files (rare)
+0o000    ---------    No permissions
+0o600    rw-------    Private files (read/write only for owner)
+0o300    -wx------    Write and execute only for owner
+0o444    r--r--r--    Read-only files for everyone
+0o222    -w--w--w-    Write-only files for everyone
+0o111    --x--x--x    Execute-only files for everyone
+0o555    r-xr-xr-x    Read and execute files for everyone
+0o333    -wx-wx-wx    Write and execute files for everyone
+0o666    -rw-rw-rw-    Read and write files for everyone
+0o777    rwxrwxrwx    Read, write, and execute files for everyone  
+'''
+
 
 #----------------------------------------------------------------------------------------------#
 #------------------------------- 6. Environment Variables -------------------------------------#
