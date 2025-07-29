@@ -115,7 +115,7 @@ import sympy as syp
 
 x, y, z = syp.symbols('x y z')
 
-func_respect_time = [
+func_respect_order = [
     (2*x + 3*y - z, y, 1),
     (x**2 + 2*x*y + z**4, z, 3),
     (2**x + 3*z, x, 2)
@@ -123,16 +123,16 @@ func_respect_time = [
 
 # syp.diff(function, respect_variable, diff_time)
 
-derrivative_result = list(starmap(syp.diff, func_respect_time))
+derrivative_result = list(starmap(syp.diff, func_respect_order))
 
 print(derrivative_result)
 # [3, 24*z, 2**x*log(2)**2]
 
 '''
 what actually happens is:
-    syp.diff(2*x + 3*y - z, y, 1) => differentiating 2*x + 3*y - z with respect to y, 1 time
-    syp.diff(x**2 + 2*x*y + z**4, z, 3) => differentiating x**2 + 2*x*y + z**4 with respect to z, 3 times
-    syp.diff(2**x + 3*z, x, 2 => differentiating 2**x + 3*z with respect to x, 2 times
+    syp.diff(2*x + 3*y - z, y, 1) => differentiating 2*x + 3*y - z with respect to y, 1 order
+    syp.diff(x**2 + 2*x*y + z**4, z, 3) => differentiating x**2 + 2*x*y + z**4 with respect to z, 3 orders
+    syp.diff(2**x + 3*z, x, 2 => differentiating 2**x + 3*z with respect to x, 2 orders
 '''
 
 ###########################
