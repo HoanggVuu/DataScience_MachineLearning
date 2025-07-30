@@ -8,7 +8,7 @@ ArgumentParser automatically generates help messages, handles errors when users 
 and supports both positional and optional arguments.
 '''
 
-#######
+##########################
 
 '''
 The Three-Step Process
