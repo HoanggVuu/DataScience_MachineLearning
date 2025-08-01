@@ -50,7 +50,7 @@ for i in range(1, 201):
     }
     
     filename = f"rectangle_{i}.json"
-    filepath = Path("02_Python_class_OOP/rectanble_project/rectangle_data").joinpath(filename)
+    filepath = Path("02_Python_class_OOP/rectanble_project/data").joinpath(filename)
     
     with open(filepath, 'w') as f:
         json.dump(data, f, indent=4)
@@ -62,7 +62,7 @@ logger.info("Corrupted files are randomly distributed among rectangle_1.json to 
 logger.info("\nExamples of some corrupted files:")
 sample_corrupted = random.sample(corrupted_indices, min(5, len(corrupted_indices)))
 for i in sample_corrupted:
-    filepath = Path("02_Python_class_OOP/rectanble_project/rectangle_data").joinpath(f'rectangle_{i}.json')
+    filepath = Path("02_Python_class_OOP/rectanble_project/data").joinpath(f'rectangle_{i}.json')
     with open(filepath, 'r') as f:
         data = json.load(f)
     logger.error(f"rectangle_{i}.json: {data}")
