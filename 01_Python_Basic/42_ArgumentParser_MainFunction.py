@@ -57,18 +57,10 @@ def rectangle_circumference(length, width):
 
 def rectangle_area(length, width):
     """Calculate the area of a rectangle."""
-    try:
-        length = float(length)  # Ensure length is a float
-        width = float(width)   # Ensure width is a float
-        assert length > 0 and width > 0, "Length and width must be positive numbers."
-    except ValueError as ve:
-        logger.error(f"Invalid input: {ve}. Length and width must be numbers.")
-        return None
-    except AssertionError as ae:
-        logger.error(ae)
-        return None
-    else:
-        return length * width
+    # Don't need to check the length and width's constrains, since the circumference function has already done that
+    length = float(length)
+    width = float(width)
+    return length * width
 
 
 def save_results(out_message, filepath):
@@ -104,16 +96,16 @@ def parse_args():
                             formatter_class = formatter)
 
     # Add arguments to the "parser" object
-    parser.add_argument("-l", "--length", required = True, metavar = "", help = "Length of the rectangle (expected to be a positive number).")
-    parser.add_argument("-w", "--width", required = True, metavar = "", help = "Width of the rectangle (expected to be a positive number).")
-    parser.add_argument("-o", "--out", required = False, metavar = "", type = str, default = "", help = "Path to the output file saving the results.")
+    parser.add_argument("-l", "--length", required = True, metavar = "\b".strip(), help = "Length of the rectangle (expected to be a positive number).")
+    parser.add_argument("-w", "--width", required = True, metavar = "\b", help = "Width of the rectangle (expected to be a positive number).")
+    parser.add_argument("-o", "--out", required = False, metavar = "\b", type = str, default = "", help = "Path to the output file saving the results.")
 
     return parser.parse_args()  # Parse the command-line arguments and return them
 
 # -o means short flag
 # --out means long flag
 # required = True means that the argument is mandatory (False means optional)
-# metavar = "" means that the argument will not be shown in the help message
+# metavar = "\b" to hide the metavar like LENGTH and WIDTH, and avoid the space character like "-l , --length" (if set metavar = "")
 # type = str means that the argument MUST be a string
 # default = "" means that if the user doesn't provide this argument, an empty string will be parsed as default value
 # help = "..." is the description of the argument that will be shown in the help message
@@ -134,12 +126,14 @@ def main():
             width = args.width # Get the width from the parsed arguments
         )
 
-        # Calculate the area
-        area = rectangle_area(args.length, args.width)
-
-        if (circumference is not None) and (area is not None):
+        if circumference is None:
+            return None
+        else:
+            # Calculate the area
+            area = rectangle_area(args.length, args.width)
+            
             out_message = (
-                "\n"
+                "Program ran succesfully!\n"
                 f"Length = {args.length}\n"
                 f"Width = {args.width}\n"
                 f"Circumference = 2 * ({args.length} + {args.width}) = {circumference}\n"
