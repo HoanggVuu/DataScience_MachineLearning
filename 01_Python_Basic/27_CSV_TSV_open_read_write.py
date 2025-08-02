@@ -37,10 +37,10 @@ import csv
 ## Read a classic .csv file ##
 ##############################
 
-with open(file = f"{parent_dir}/drinks.csv", mode = "r", newline = "", encoding = "utf-8") as file:
+with open(file = f"{parent_dir}/drinks.csv", mode = "r", newline = "", encoding = "utf-8") as file_pointer:
     # newline = "" parameter is crucial to prevent issues with line endings across different operating systems
     # encoding = "utf-8" means interpret the file using the utf8 encoding
-    csv_read_object = csv.reader(file)
+    csv_read_object = csv.reader(file_pointer)
 
     print(csv_read_object) # <_csv.reader object at 0x7f91d9449000>
                            # It returns a reader object, not the actual data or conent of the .csv file
@@ -67,8 +67,8 @@ NOTE: everything must be indented inside the "with" block, otherwise it will not
 ## Read .csv file without the header row ##
 ###########################################
 
-with open(file = f"{parent_dir}/drinks.csv", mode = "r", newline = "", encoding = "utf-8") as file:
-    csv_read_object = csv.reader(file)
+with open(file = f"{parent_dir}/drinks.csv", mode = "r", newline = "", encoding = "utf-8") as file_pointer:
+    csv_read_object = csv.reader(file_pointer)
     _ = next(csv_read_object)  # This will skip the first row (header row)
                                # Assign to _ (underscore) to indicate that we don't need this value (first row)
     for row in csv_read_object:
@@ -87,8 +87,8 @@ with open(file = f"{parent_dir}/drinks.csv", mode = "r", newline = "", encoding 
 
 # The process is similar, just need to specify the delimiter as a tab character ("\t")
 
-with open(file = f"{parent_dir}/weather.tsv", mode = "r", newline = "", encoding = "utf-8") as file:
-    tsv_read_object = csv.reader(file, delimiter = "\t")
+with open(file = f"{parent_dir}/weather.tsv", mode = "r", newline = "", encoding = "utf-8") as file_pointer:
+    tsv_read_object = csv.reader(file_pointer, delimiter = "\t")
     for row in tsv_read_object:
         print(row)  # Each row is a list of values from the .tsv file
 
@@ -106,8 +106,8 @@ Can also set delimiter to other characters like ';' or '|', just specify it in t
 ####################################
 
 # use csv.DictReader() to read a .csv file as a dictionary
-with open(file = f"{parent_dir}/medals.csv", mode = "r", newline = "", encoding = "utf-8") as file:
-    csv_dict_reader = csv.DictReader(file)
+with open(file = f"{parent_dir}/medals.csv", mode = "r", newline = "", encoding = "utf-8") as file_pointer:
+    csv_dict_reader = csv.DictReader(file_pointer)
     for row in csv_dict_reader:
         print(row)  # Each row is a dictionary with column headers as keys
 
@@ -118,8 +118,8 @@ with open(file = f"{parent_dir}/medals.csv", mode = "r", newline = "", encoding 
 
 
 # The DictReader automatically uses the first row as field names unless you specify the fieldnames parameter explicitly
-with open(file = f"{parent_dir}/medals.csv", mode = "r", newline = "", encoding = "utf-8") as file:
-    csv_dict_reader = csv.DictReader(file, fieldnames = ["Y", "C", "S", "D", "N", "E", "EG", "M"])
+with open(file = f"{parent_dir}/medals.csv", mode = "r", newline = "", encoding = "utf-8") as file_pointer:
+    csv_dict_reader = csv.DictReader(file_pointer, fieldnames = ["Y", "C", "S", "D", "N", "E", "EG", "M"])
     for row in csv_dict_reader:
         print(row)  # Each row is a dictionary with specified keys
 
@@ -140,8 +140,8 @@ import csv
 
 def process_csv_chunks(file_path, chunk_size=1000):
     """Generator function to process CSV file in chunks."""
-    with open(file=file_path, mode="r", newline="", encoding="utf-8") as file:
-        reader = csv.DictReader(file, delimiter="\t")
+    with open(file=file_path, mode="r", newline="", encoding="utf-8") as file_pointer:
+        reader = csv.DictReader(file_pointer, delimiter="\t")
         chunk = []
         for row in reader:
             chunk.append(row)
@@ -181,8 +181,8 @@ data = [
     ['Bob', 35, 'Chicago']
 ]
 
-with open(f'{parent_dir}/write_list.csv', 'w', newline='', encoding='utf-8') as file:
-    writer = csv.writer(file)
+with open(f'{parent_dir}/write_list.csv', 'w', newline='', encoding='utf-8') as file_pointer:
+    writer = csv.writer(file_pointer)
     writer.writerows(data)
 
 
@@ -197,8 +197,8 @@ data = [
     {'ID': '3', 'Name': 'Charlie', 'Gender': 'Female', 'Age': '30'}
 ]
 
-with open(f'{parent_dir}/write_dictionary.csv', 'w', newline='') as file:
-    writer = csv.DictWriter(file, fieldnames = fields, delimiter = ",")
+with open(f'{parent_dir}/write_dictionary.csv', 'w', newline='') as file_pointer:
+    writer = csv.DictWriter(file_pointer, fieldnames = fields, delimiter = ",")
     writer.writeheader() # Write the header row
     writer.writerows(data) # Write the data rows
 
@@ -214,8 +214,8 @@ data = [
     ['Charlie', 'History', 88]
 ]
 
-with open(f'{parent_dir}/write_tsv.tsv', 'w', newline='', encoding='utf-8') as file:
-    writer = csv.writer(file, delimiter='\t')  # Specify tab as the delimiter
+with open(f'{parent_dir}/write_tsv.tsv', 'w', newline='', encoding='utf-8') as file_pointer:
+    writer = csv.writer(file_pointer, delimiter='\t')  # Specify tab as the delimiter
     writer.writerows(data)  # Write the data rows
 
 
@@ -247,8 +247,8 @@ data = [
 ## Example of using the "quoting" parameter with QUOTE_ALL ##
 #############################################################
 
-with open(f'{parent_dir}/write_quoting_all.csv', 'w', newline='', encoding='utf-8') as file:
-    writer = csv.writer(file, quoting = csv.QUOTE_ALL)  # Quote all fields
+with open(f'{parent_dir}/write_quoting_all.csv', 'w', newline='', encoding='utf-8') as file_pointer:
+    writer = csv.writer(file_pointer, quoting = csv.QUOTE_ALL)  # Quote all fields
     writer.writerows(data)
 
 # "Place","Humidity","Temperature"
@@ -261,8 +261,8 @@ with open(f'{parent_dir}/write_quoting_all.csv', 'w', newline='', encoding='utf-
 ## Example of using the "quoting" parameter with QUOTE_NONNUMERIC ##
 ####################################################################
 
-with open(f'{parent_dir}/write_quoting_non_numeric.csv', 'w', newline='', encoding='utf-8') as file:
-    writer = csv.writer(file, quoting = csv.QUOTE_NONNUMERIC)  # Quote all non-numeric fields
+with open(f'{parent_dir}/write_quoting_non_numeric.csv', 'w', newline='', encoding='utf-8') as file_pointer:
+    writer = csv.writer(file_pointer, quoting = csv.QUOTE_NONNUMERIC)  # Quote all non-numeric fields
     writer.writerows(data)
 
 # "Place","Humidity","Temperature"

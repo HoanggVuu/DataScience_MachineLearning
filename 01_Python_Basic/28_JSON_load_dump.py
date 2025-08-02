@@ -135,8 +135,8 @@ dictionary_to_write = {
 }
 
 # Open the JSON file in write mode
-with open(f"{parent_dir}/new_written_jsondump.json", "w") as output_file:
-    json.dump(dictionary_to_write, output_file, indent=4)
+with open(f"{parent_dir}/new_written_jsondump.json", "w") as json_pointer:
+    json.dump(dictionary_to_write, json_pointer, indent=4)
 
 
 

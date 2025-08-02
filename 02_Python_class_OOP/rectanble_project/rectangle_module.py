@@ -36,8 +36,8 @@ class RectangleCalculator:
 
     def load_rectangle_json(self, json_rectangle_name):
         json_file_path = self.input.joinpath(json_rectangle_name)
-        with open(json_file_path, "r") as json_file_object:
-            length, width = json.load(json_file_object).values()
+        with open(json_file_path, "r") as json_pointer:
+            length, width = json.load(json_pointer).values()
         return length, width
     
 
@@ -93,8 +93,8 @@ class RectangleCalculator:
             "perimeter": self.perimeter,
             "area": self.area
         }
-        with open(self.output.joinpath(json_rectangle_name), "r") as json_file_object:
-            json_file_object.dump(result_dict, indent = 4)
+        with open(self.output.joinpath(json_rectangle_name), "r") as json_pointer:
+            json_pointer.dump(result_dict, indent = 4)
     
 
     def summary(self):
