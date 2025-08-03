@@ -68,28 +68,24 @@ class RectangleCalculator:
     def __validate_output_file(self, json_output_file):
         if str(json_output_file) == "":
             return None
-        else:
-            json_output_file =  Path(json_output_file)
-
-        if Path(self.output).suffix == ".json":
-            json_output_file = Path(self.output)
-        elif Path(self.output).suffix != "":
-            json_output_file =  Path(self.output)
-            json_output_file = json_output_file.parent.joinpath(json_output_file.stem + ".json")
-            logger.warning(f"The output file name does not end with '.json', automatically set as {json_output_file}")
-        else:
-            json_output_file = Path(self.output).joinpath(json_output_file)
         
-        if (len(str(json_output_file).split(os.path.sep)) == 1) or (not (Path(json_output_file).parent.is_dir())):
-            logger.warning(
-                "The output path's parent directory was not specified!"
-                f"\nThe current directory {Path.cwd()} will be set as its parent directory"
-            )
-            json_output_file = Path.cwd().joinpath(json_output_file.name)
+        elif Path(self.input).is_dir():
+            json_output_file = Path(self.output).joinpath(json_output_file)
+            
+            if (len(str(json_output_file).split(os.path.sep)) == 1) or (not (Path(json_output_file).parent.is_dir())):
+                logger.warning(
+                    "The output path's parent directory was not specified!"
+                    f"\nThe current directory {Path.cwd()} will be set as its parent directory"
+                )
+                json_output_file = Path.cwd().joinpath(json_output_file.name)
 
-        # if not json_output_file.name.endswith(".json"):
-        #     json_output_file = json_output_file.parent / Path(json_output_file.stem+".json")
-        #     logger.warning(f"The output file name does not end with '.json', automatically set as {json_output_file}")
+        elif str(self.output) == "":
+                return ""
+        else:
+            json_output_file = Path(self.output)
+            if not json_output_file.name.endswith(".json"):
+                json_output_file = json_output_file.parent / Path(json_output_file.stem+".json")
+                logger.warning(f"The output file name does not end with '.json', automatically set as {json_output_file}")
         
         return json_output_file
 
@@ -242,8 +238,8 @@ def config_log_file(project_dir):
 def main():
     try:
         calculator = RectangleCalculator(
-            input = "02_Python_class_OOP/rectangle_project/data/",
-            output = "02_Python_class_OOP/rectangle_project/result.csv/",
+            input = "02_Python_class_OOP/rectangle_project/data/rectangle_1.json",
+            output = "02_Python_class_OOP/rectangle_project/result",
             #length = 100,
             #width = 3,
             cores = 4
