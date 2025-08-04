@@ -189,7 +189,7 @@ class RectangleCalculator:
                     f"{area_result}\n"
                 )    
                 
-                if (str(self._input) == "")  and (None in [self.__perimeter, self.__area]):
+                if None in [self.__perimeter, self.__area]:
                     logger.critical("The given inputs are CORRUPTED! They are expected to be POSITIVE NUMBERS (greater than zero)")
                 else:
                     logger.info(out_message)
@@ -207,23 +207,27 @@ class RectangleCalculator:
             else:
                 self._single_output_path = self.__validate_output_file(self._output)
             
-            if (None not in [self.__length, self.__width]):
+            if None not in [self.__length, self.__width, self.length, self.width]:
                 logger.warning(f"Detected valid inputs in {json_rectangle_file}, prioritize them for calculation.")
-
-        elif None in [self.__length, self.__width]:
-            logger.critical("No valid inputs were given")
-            self._output = ""
-            return None
+            elif None not in [self.__length, self.__width]:
+                logger.warning("Detected validi inputs given by -l (--length) and -w (--width), using them for calculation")
+                self.length, self.width = self.__length, self.__width
+            else:
+                logger.critical("No valid inputs were given")
+                self._output = ""
+                return None
         
         else:
             self.length, self.width = self.__length, self.__width
             self._single_output_path = self.__validate_output_file(self._output)
 
-        if self._single_output_path is None:
-            self.summary()
-        
-        else:
+        if self._single_output_path is not None:
             self.summary(self._single_output_path)
+        elif Path(json_rectangle_file).is_file():
+            self.summary(json_rectangle_file.name)
+        else:
+            self.summary()
+            
 
 
 #------------------------------------------------------------------------------------------------------------#
@@ -241,18 +245,51 @@ def __config_log_file(project_dir): # Internal use only, cannot call out when th
             level="WARNING") # Only save the WARNING level and above
 
 
+#--------------------------------------------------------------------------------------------------------------#
+#------------------------------------------ Define parse_args() function --------------------------------------#
+#--------------------------------------------------------------------------------------------------------------#
+
+def __parse_args():
+    formatter = lambda prog: HelpFormatter(prog, width = 200, max_help_position = 50)
+
+    parser = ArgumentParser(
+        prog = "Rectangle Calculator Program",
+        description = "Calculate the perimeter and area of a rectangle.",
+        add_help = True,
+        formatter_class = formatter
+    )
+    
+    parser.add_argument("-l", "--length", required = False, default = None, metavar = "\b", help = "Length of the rectangle (expected to be a positive number).")
+    parser.add_argument("-w", "--width", required = False, default = None, metavar = "\b", help = "Width of the rectangle (expected to be a positive number).")
+    parser.add_argument("-i", "--input", required = False, default = "", metavar = "\b", help = "Input path leading to a JSON file containing the length and width of a rectangle, or to a directory having multiple JSON input files.")
+    parser.add_argument("-o", "--output", required = False, default = "", metavar = "\b", help = "Output path leading to a JSON file to store the results, or to a directory to store multiple JSON output files.")
+    parser.add_argument("-c", "--cores", required = False, default = 2, type = int, metavar = "\b", help = "The number of CPU cores to be used for parallel computing.")
+
+    return parser.parse_args()
+
+
 #------------------------------------------------------------------------------------------------------------#
 #------------------------------------------ Define main() function ------------------------------------------#
 #------------------------------------------------------------------------------------------------------------#
 
 def main():
     try:
+        # calculator = RectangleCalculator(
+        #     #length = 15,
+        #     #width = 3.5,
+        #     #input = "02_Python_class_OOP/rectangle_project/data",
+        #     #output = "02_Python_class_OOP/rectangle_project/result",
+        #     cores = 4
+        # )
+
+        args = __parse_args()
+
         calculator = RectangleCalculator(
-            input = "02_Python_class_OOP/rectangle_project/data",
-            #output = "02_Python_class_OOP/rectangle_project/result",
-            #length = 15,
-            #width = 3.5,
-            cores = 4
+            length = args.length,
+            width = args.width,
+            input = args.input,
+            output = args.output,
+            cores = args.cores
         )
 
         if (calculator._input != "") and Path(calculator._input).exists():
