@@ -144,6 +144,7 @@ class RectangleCalculator:
             self.__area = None
         else:
             self.__area = self.length * self.width # Name it as "self.__area" to prevent user from changing its value
+        
         return self.__area
 
     
@@ -205,6 +206,8 @@ class RectangleCalculator:
 
         elif None in [self.__length, self.__width]:
             logger.critical("No valid inputs were given")
+            self.output = ""
+            return None
         
         else:
             self.length, self.width = self.__length, self.__width
@@ -239,10 +242,10 @@ def config_log_file(project_dir):
 def main():
     try:
         calculator = RectangleCalculator(
-            input = "02_Python_class_OOP/rectangle_project/data/rectangle_1.json",
-            output = "02_Python_class_OOP/rectangle_project/result/subdir/result.txt",
-            length = 15,
-            width = 3.5,
+            input = "02_Python_class_OOP/rectangle_project/data",
+            output = "02_Python_class_OOP/rectangle_project/result",
+            #length = 15,
+            #width = 3.5,
             cores = 4
         )
 
