@@ -53,7 +53,7 @@ class RectangleCalculator:
                 else:
                     self._output = Path(self._output)
                 
-                non_json_count = sum([1 for entry in self._output.rglob("*[!.json]")]) # Ensure the directory contains only json file
+                non_json_count = sum([1 for _ in self._output.rglob("*[!.json]")]) # Ensure the directory contains only json file
                 
                 if (self._output.is_dir()) and (non_json_count == 0):
                     shutil.rmtree(self._output)
@@ -82,7 +82,7 @@ class RectangleCalculator:
         
         
         if json_output_file.suffix == "":
-            non_json_count = sum([1 for entry in json_output_file.rglob("*[!.json]")]) # Ensure the directory contains only json file
+            non_json_count = sum([1 for _ in json_output_file.rglob("*[!.json]")]) # Ensure the directory contains only json file
             
             if (json_output_file.is_dir()) and (non_json_count == 0):
                 shutil.rmtree(json_output_file)
