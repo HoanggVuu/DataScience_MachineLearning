@@ -49,7 +49,7 @@ class RectangleCalculator:
                 if (Path(self._output).suffix != ""):
                     self._output = Path(self._output)
                     self._output = self._output.parent / self._output.stem # Create a new path without the suffix
-                    logger.warning(f"You have passed inputs from multiple files, so the ouput path should be a directory, automatically set as {self._output}")
+                    logger.warning(f"You have passed inputs from multiple files, so the ouput path should be a directory, automatically set as {self._output}\n")
                 
                 else:
                     self._output = Path(self._output)
@@ -94,11 +94,11 @@ class RectangleCalculator:
                 json_output_file.mkdir(exist_ok = True, parents = True)
             
             json_output_file = json_output_file.joinpath("nameless.json")
-            logger.warning(f"The given output file path is actually a directory, automatically set as {json_output_file}")
+            logger.warning(f"The given output file path is actually a directory, automatically set as {json_output_file}\n")
         
         elif json_output_file.suffix != ".json":
             json_output_file = json_output_file.parent.joinpath(json_output_file.stem + ".json")
-            logger.warning(f'The given output file path does not end with ".json", automatically set as {json_output_file}')
+            logger.warning(f'The given output file path does not end with ".json", automatically set as {json_output_file}\n')
 
         return json_output_file
 
@@ -195,7 +195,7 @@ class RectangleCalculator:
             case "":
                 return None
             case _:
-                logger.info(f"The result is saved in {self._single_output_path}")
+                logger.info(f"The result is saved in {self._single_output_path}\n")
 
     
     def summary(self, rectangle_output_name = "nameless"):
@@ -221,20 +221,20 @@ class RectangleCalculator:
                 )    
 
                 if (str(self._input) == "") and (None in [self.__perimeter, self.__area]):
-                    logger.critical("NO valid inputs were given! They are expected to be POSITIVE NUMBERS (greater than zero)")
+                    logger.critical("NO valid inputs were given! They are expected to be POSITIVE NUMBERS (greater than zero)\n")
                 
                 elif (str(self._input) != "") and (None in [self.__perimeter, self.__area]):
                     return None
                 
                 else:
                     if (str(self._input) != "") and (Path(self._input).exists()) and (None not in [self.__length, self.__width, self.length, self.width]):
-                        logger.warning(f"Detected valid inputs in {rectangle_output_name}, prioritize them for calculation.")
+                        logger.warning(f"Detected valid inputs in {rectangle_output_name}, prioritize them for calculation.\n")
                         
                     logger.info(out_message)
             
             case _:
                 if (str(self._input) != "") and (Path(self._input).exists()) and (None not in [self.__length, self.__width, self.length, self.width]):
-                    logger.warning(f"Detected valid inputs in {rectangle_output_name}, prioritize them for calculation.")
+                    logger.warning(f"Detected valid inputs in {rectangle_output_name}, prioritize them for calculation.\n")
                 
                 self.__save_output_file()
 
@@ -253,7 +253,7 @@ class RectangleCalculator:
                     return None
                 
                 elif (None in [self.length, self.width]) and (None not in [self.__length, self.__width]):
-                    logger.debug("Detected valid inputs given by -l (--length) and -w (--width), using them for calculation")
+                    logger.debug("Detected valid inputs given by -l (--length) and -w (--width), using them for calculation\n")
                     json_rectangle_file = "" # To avoid using the name of corrupted file in the summary()
             
                 self._single_output_path = self.__validate_output_file(self._output)
@@ -262,7 +262,7 @@ class RectangleCalculator:
             self.length, self.width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
         
             if None in [self.length, self.width]: # Check if the given inputs from -l and -w are valid
-                logger.critical("NO valid inputs were given! They are expected to be POSITIVE NUMBERS (greater than zero)")
+                logger.critical("NO valid inputs were given! They are expected to be POSITIVE NUMBERS (greater than zero)\n")
                 self._output = "" # To avoid displaying the log "The result is saved in None"
                 return None
             
@@ -323,23 +323,23 @@ def __parse_args():
 
 def main():
     try:
-        calculator = RectangleCalculator(
-            length = '23',
-            width = "55",
-            input = "02_Python_class_OOP/rectangle_project/data_single/",
-            #output = "02_Python_class_OOP/rectangle_project/result_single.txt",
-            cores = 4
-        )
+        # calculator = RectangleCalculator(
+        #     length = '23',
+        #     width = "55",
+        #     input = "02_Python_class_OOP/rectangle_project/data_single/rectangle_single.json",
+        #     output = "02_Python_class_OOP/rectangle_project/result_single.txt",
+        #     cores = 4
+        # )
 
         args = __parse_args()
 
-        # calculator = RectangleCalculator(
-        #     length = args.length,
-        #     width = args.width,
-        #     input = args.input,
-        #     output = args.output,
-        #     cores = args.cores
-        # )
+        calculator = RectangleCalculator(
+            length = args.length,
+            width = args.width,
+            input = args.input,
+            output = args.output,
+            cores = args.cores
+        )
 
         if (calculator._input != "") and (Path(calculator._input).is_dir()):
             calculator._input = Path(calculator._input)
@@ -377,15 +377,15 @@ def main():
                         # for entry in calculator._input.glob("*.json"):
                         #     calculator._single_workflow(entry.name)
 
-                        logger.info(f"All result files are saved in {calculator._output}")
+                        logger.info(f"All result files are saved in {calculator._output}\n")
             
             elif calculator._json_count == 1:
-                logger.debug("Only one input JSON file is detected in the given directory. If the output path is also given, it should be in a file format.")
+                logger.debug("Only one input JSON file is detected in the given directory. If the output path is also given, it should be in a file format.\n")
                 calculator._single_workflow(calculator._input.joinpath(input_json_files[0][0]))
                 calculator._display_saving_single_output_message()
             
             else:
-                logger.warning("The given input directory has no JSON file! Use inputs from -l (--length) and -w (--width) for calculation")
+                logger.warning("The given input directory has no JSON file! Use inputs from -l (--length) and -w (--width) for calculation\n")
                 calculator._single_workflow('') 
                 calculator._display_saving_single_output_message() 
 
@@ -403,14 +403,14 @@ def main():
 
         else:
             if (calculator._input != "") and (not Path(calculator._input).exists()):
-                logger.warning("The given input path does not exist! Use inputs from -l (--length) and -w (--width) for calculation")
+                logger.warning("The given input path does not exist! Use inputs from -l (--length) and -w (--width) for calculation\n")
             
             calculator._single_workflow('')
             calculator._display_saving_single_output_message()
 
     
     except Exception as e:
-        logger.critical(e)
+        logger.critical(f"{e}\n")
 
 
 #---------------------------------------------------------------------------------------------------------#
@@ -419,4 +419,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    logger.info("Program ended! Thank you!")
+    logger.info("Program ended! Thank you!\n")
