@@ -367,7 +367,7 @@ def main():
                         logger.info(f"All result files are saved in {calculator._output}")
             
             elif len(input_json_files) == 1:
-                logger.debug("Only one input JSON file is detected in the given directory. If the output path also given, it should be in a file format.")
+                logger.debug("Only one input JSON file is detected in the given directory. If the output path is also given, it should be in a file format.")
                 calculator._single_workflow(input_json_files[0][0])
 
             

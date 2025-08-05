@@ -26,17 +26,17 @@ print(df_testing_cases)
 # │ ---          ┆ ---           ┆ ---             │   (must be in 02_Python_class_OOP/rectangle_project first,
 # │ str          ┆ str           ┆ str             │    use "cd 02_Python_class_OOP/rectangle_project")
 # ╞══════════════╪═══════════════╪═════════════════╡
-# │ not_given    ┆ not_given     ┆ not_given       │   python3 rectangle_module.py
+# │ not_given    ┆ not_given     ┆ not_given       │   python rectangle_module.py
 # │ not_given    ┆ not_given     ┆ non_existed_dir │   python rectangle_module.py -o result
 # │ not_given    ┆ not_given     ┆ existed_dir     │   python rectangle_module.py -o result
 # │ not_given    ┆ not_given     ┆ json_file       │   python rectangle_module.py -o result.json
 # │ not_given    ┆ not_given     ┆ not_json_file   │   python rectangle_module.py -o result.txt
-# │ not_given    ┆ dir_many_json ┆ not_given       │
-# │ not_given    ┆ dir_many_json ┆ non_existed_dir │
-# │ not_given    ┆ dir_many_json ┆ existed_dir     │
-# │ not_given    ┆ dir_many_json ┆ json_file       │
-# │ not_given    ┆ dir_many_json ┆ not_json_file   │
-# │ not_given    ┆ dir_one_json  ┆ not_given       │
+# │ not_given    ┆ dir_many_json ┆ not_given       │   python rectangle_module.py -i data
+# │ not_given    ┆ dir_many_json ┆ non_existed_dir │   python rectangle_module.py -i data -o ./result_dir
+# │ not_given    ┆ dir_many_json ┆ existed_dir     │   python rectangle_module.py -i data -o ./result_dir
+# │ not_given    ┆ dir_many_json ┆ json_file       │   python rectangle_module.py -i data -o ./result_file.json
+# │ not_given    ┆ dir_many_json ┆ not_json_file   │   python rectangle_module.py -i data -o ./result_file.txt
+# │ not_given    ┆ dir_one_json  ┆ not_given       │   python rectangle_module.py -i data_single
 # │ not_given    ┆ dir_one_json  ┆ non_existed_dir │
 # │ not_given    ┆ dir_one_json  ┆ existed_dir     │
 # │ not_given    ┆ dir_one_json  ┆ json_file       │
