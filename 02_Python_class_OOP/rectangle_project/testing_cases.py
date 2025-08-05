@@ -96,18 +96,18 @@ print(df_testing_cases)
 # │ one_valid    ┆ not_existed   ┆ existed_dir     │   python rectangle_module.py -l 2 -w a -i ./abcxyz -o ./data_single
 # │ one_valid    ┆ not_existed   ┆ json_file       │   python rectangle_module.py -l 2 -w a -i ./abcxyz -o ./result_test.json
 # │ one_valid    ┆ not_existed   ┆ not_json_file   │   python rectangle_module.py -l 2 -w a -i ./abcxyz -o ./result_test.txt
-# │ both_valid   ┆ not_given     ┆ not_given       │   
-# │ both_valid   ┆ not_given     ┆ non_existed_dir │
-# │ both_valid   ┆ not_given     ┆ existed_dir     │
-# │ both_valid   ┆ not_given     ┆ json_file       │
-# │ both_valid   ┆ not_given     ┆ not_json_file   │
-# │ both_valid   ┆ dir_many_json ┆ not_given       │
-# │ both_valid   ┆ dir_many_json ┆ non_existed_dir │
-# │ both_valid   ┆ dir_many_json ┆ existed_dir     │
-# │ both_valid   ┆ dir_many_json ┆ json_file       │
-# │ both_valid   ┆ dir_many_json ┆ not_json_file   │
-# │ both_valid   ┆ dir_one_json  ┆ not_given       │
-# │ both_valid   ┆ dir_one_json  ┆ non_existed_dir │
+# │ both_valid   ┆ not_given     ┆ not_given       │   python rectangle_module.py -w 23 -l 55 
+# │ both_valid   ┆ not_given     ┆ non_existed_dir │   python rectangle_module.py -w 23 -l 55 -o ./result_test
+# │ both_valid   ┆ not_given     ┆ existed_dir     │   python rectangle_module.py -w 23 -l 55 -o ./result_test
+# │ both_valid   ┆ not_given     ┆ json_file       │   python rectangle_module.py -w 23 -l 55 -o ./result_test.json
+# │ both_valid   ┆ not_given     ┆ not_json_file   │   python rectangle_module.py -w 23 -l 55 -o ./result_test.json
+# │ both_valid   ┆ dir_many_json ┆ not_given       │   python rectangle_module.py -w 23 -l 55 -i ./data
+# │ both_valid   ┆ dir_many_json ┆ non_existed_dir │   python rectangle_module.py -w 23 -l 55 -i ./data -o ./result_test
+# │ both_valid   ┆ dir_many_json ┆ existed_dir     │   python rectangle_module.py -w 23 -l 55 -i ./data -o ./result_test
+# │ both_valid   ┆ dir_many_json ┆ json_file       │   python rectangle_module.py -w 23 -l 55 -i ./data -o ./result_test.json
+# │ both_valid   ┆ dir_many_json ┆ not_json_file   │   python rectangle_module.py -w 23 -l 55 -i ./data -o ./result_test.txt
+# │ both_valid   ┆ dir_one_json  ┆ not_given       │   python rectangle_module.py -w 23 -l 55 -i ./data_single/
+# │ both_valid   ┆ dir_one_json  ┆ non_existed_dir │   python rectangle_module.py -w 23 -l 55 -i ./data_single/ -o ./result_test
 # │ both_valid   ┆ dir_one_json  ┆ existed_dir     │
 # │ both_valid   ┆ dir_one_json  ┆ json_file       │
 # │ both_valid   ┆ dir_one_json  ┆ not_json_file   │

@@ -193,11 +193,10 @@ class RectangleCalculator:
 
     
     def summary(self, rectangle_output_name = "nameless"):
+        rectangle_output_name = colored(str(rectangle_output_name), "magenta", attrs=["bold"])
         
         match str(self._output):
             case "":
-
-                rectangle_output_name = colored(str(rectangle_output_name), "magenta", attrs=["bold"])
 
                 perimeter_result = colored(f"++ Perimeter = 2 * ({self.length} + {self.width}) = {self.perimeter}", "cyan", attrs=["bold"])
                 area_result = colored(f"++ Area = {self.length} * {self.width} = {self.area}", "cyan", attrs=["bold"])
@@ -217,9 +216,15 @@ class RectangleCalculator:
                     return None
                 
                 else:
+                    if (str(self._input) != "") and (Path(self._input).exists()) and (None not in [self.__length, self.__width, self.length, self.width]):
+                        logger.warning(f"Detected valid inputs in {rectangle_output_name}, prioritize them for calculation.")
+                        
                     logger.info(out_message)
             
             case _:
+                if (str(self._input) != "") and (Path(self._input).exists()) and (None not in [self.__length, self.__width, self.length, self.width]):
+                    logger.warning(f"Detected valid inputs in {rectangle_output_name}, prioritize them for calculation.")
+                
                 self.__save_output_file()
 
 
@@ -227,9 +232,6 @@ class RectangleCalculator:
         if json_rectangle_file != '': # If the input JSON file is given, use its data for calculation
             self.length, self.width = self.__load_rectangle_inputs(json_rectangle_file)
             self.__length, self.__width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
-
-            if None not in [self.__length, self.__width, self.length, self.width]:
-                logger.warning(f"Detected valid inputs in {json_rectangle_file}, prioritize them for calculation.")
 
             if Path(self._input).is_dir() and (self._json_count >= 2):  
                 self._single_output_path = self.__validate_output_file(json_rectangle_file)
@@ -239,7 +241,7 @@ class RectangleCalculator:
                     self._output = "" # To avoid displaying the log "The result is saved in None"
                     return None
                 
-                elif None not in [self.__length, self.__width]:
+                elif (None in [self.length, self.width]) and (None not in [self.__length, self.__width]):
                     logger.debug("Detected valid inputs given by -l (--length) and -w (--width), using them for calculation")
                     self.length, self.width = self.__length, self.__width
                     json_rectangle_file = "" # To avoid using the name of corrupted file in the summary()
@@ -312,23 +314,23 @@ def __parse_args():
 
 def main():
     try:
-        # calculator = RectangleCalculator(
-        #     #length = '2',
-        #     #width = "12.4.",
-        #     input = "02_Python_class_OOP/rectangle_project/data_single/rectangle_single.json",
-        #     output = "02_Python_class_OOP/rectangle_project/result_single",
-        #     cores = 4
-        # )
-
-        args = __parse_args()
-
         calculator = RectangleCalculator(
-            length = args.length,
-            width = args.width,
-            input = args.input,
-            output = args.output,
-            cores = args.cores
+            length = '23',
+            width = "55",
+            input = "02_Python_class_OOP/rectangle_project/data_single/rectangle_single.json",
+            #output = "02_Python_class_OOP/rectangle_project/result_single.txt",
+            cores = 4
         )
+
+        # args = __parse_args()
+
+        # calculator = RectangleCalculator(
+        #     length = args.length,
+        #     width = args.width,
+        #     input = args.input,
+        #     output = args.output,
+        #     cores = args.cores
+        # )
 
         if (calculator._input != "") and (Path(calculator._input).is_dir()):
             calculator._input = Path(calculator._input)
@@ -370,9 +372,8 @@ def main():
             
             elif calculator._json_count == 1:
                 logger.debug("Only one input JSON file is detected in the given directory. If the output path is also given, it should be in a file format.")
-                calculator._single_workflow(input_json_files[0][0])
+                calculator._single_workflow(calculator._input.joinpath(input_json_files[0][0]))
                 calculator._display_saving_single_output_message()
-
             
             else:
                 logger.warning("The given input directory has no JSON file! Use inputs from -l (--length) and -w (--width) for calculation")
