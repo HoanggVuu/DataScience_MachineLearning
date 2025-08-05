@@ -37,6 +37,7 @@ class RectangleCalculator:
         self.width = None
         self._cores = cores
         self._single_output_path = None
+        self._json_count = 0
 
 
     def __validate_output_directory(self): # Internal use only, cannot call out when the module is being imported
@@ -68,14 +69,15 @@ class RectangleCalculator:
             return None
         
         elif (str(self._input) != "") and (Path(self._input).is_dir()):
-            json_output_file = Path(self._output).joinpath(json_output_file)
+            
+            if self._json_count >= 2:
+                json_output_file = Path(self._output).joinpath(json_output_file)
 
+            else:
+                json_output_file = Path(self._output)
+        
         elif str(self._output) == "":
             return None
-        
-        elif not Path(self._output).parent.is_dir():
-            Path(self._output).parent.mkdir(parents = True, exist_ok = True)
-            json_output_file = Path(self._output).parent.joinpath(Path(self._output).name)
         
         else:
             json_output_file = Path(self._output)
@@ -89,7 +91,7 @@ class RectangleCalculator:
                 json_output_file.mkdir(exist_ok = True)
             
             else:
-                json_output_file.mkdir(exist_ok = True)
+                json_output_file.mkdir(exist_ok = True, parents = True)
             
             json_output_file = json_output_file.joinpath("nameless.json")
             logger.warning(f"The given output file path is actually a directory, automatically set as {json_output_file}")
@@ -229,16 +231,10 @@ class RectangleCalculator:
             if None not in [self.__length, self.__width, self.length, self.width]:
                 logger.warning(f"Detected valid inputs in {json_rectangle_file}, prioritize them for calculation.")
 
-            if Path(self._input).is_dir():
-                json_count = sum([1 for _ in Path(self._input).glob("*.json")])
+            if Path(self._input).is_dir() and (self._json_count >= 2):  
+                self._single_output_path = self.__validate_output_file(json_rectangle_file)
                 
-                if json_count >= 2:
-                    self._single_output_path = self.__validate_output_file(json_rectangle_file)
-                
-                else:
-                    self._single_output_path = self.__validate_output_file(self._output)
-        
-            else:
+            elif ((Path(self._input).is_dir()) and (self._json_count == 1)) or (Path(self._input).is_file()):
                 if (None in [self.length, self.width]) and (None in [self.__length, self.__width]):
                     self._output = "" # To avoid displaying the log "The result is saved in None"
                     return None
@@ -320,7 +316,7 @@ def main():
             #length = '2',
             #width = "12.4.",
             input = "02_Python_class_OOP/rectangle_project/data_single/",
-            output = "02_Python_class_OOP/rectangle_project/result",
+            output = "02_Python_class_OOP/rectangle_project/result/subdir_2.json",
             cores = 4
         )
 
@@ -336,9 +332,11 @@ def main():
 
         if (calculator._input != "") and (Path(calculator._input).is_dir()):
             calculator._input = Path(calculator._input)
-            input_json_files = [(entry.name,) for entry in calculator._input.glob("*.json")]
             
-            if len(input_json_files) >= 2:
+            input_json_files = [(entry.name,) for entry in calculator._input.glob("*.json")]
+            calculator._json_count = len(input_json_files)
+            
+            if calculator._json_count >= 2:
                 calculator._output = calculator._RectangleCalculator__validate_output_directory()
 
                 match str(calculator._output):
@@ -370,7 +368,7 @@ def main():
 
                         logger.info(f"All result files are saved in {calculator._output}")
             
-            elif len(input_json_files) == 1:
+            elif calculator._json_count == 1:
                 logger.debug("Only one input JSON file is detected in the given directory. If the output path is also given, it should be in a file format.")
                 calculator._single_workflow(input_json_files[0][0])
                 calculator._display_saving_single_output_message()
