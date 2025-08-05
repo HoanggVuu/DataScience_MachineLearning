@@ -138,16 +138,16 @@ class RectangleCalculator:
     @property
     def perimeter(self):
         if (None in [self.length, self.width]) and ((str(self._input) == "") or (not Path(self._input).is_dir())):
-            self.length, self.width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
+            length, width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
         
         else:
-            self.length, self.width = RectangleCalculator.__valiate_input_number(self.length, self.width)
+            length, width = RectangleCalculator.__valiate_input_number(self.length, self.width)
         
-        if None in [self.length, self.width]:
+        if None in [length, width]:
             self.__perimeter = None
         
         else:
-            self.__perimeter = 2 * (self.length + self.width) # Name it as "self.__perimeter" to prevent user from changing its value 
+            self.__perimeter = 2 * (length + width) # Name it as "self.__perimeter" to prevent user from changing its value 
        
         return self.__perimeter
 
@@ -155,24 +155,30 @@ class RectangleCalculator:
     @property
     def area(self):
         if (None in [self.length, self.width]) and ((str(self._input) == "") or (not Path(self._input).is_dir())):
-            self.length, self.width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
+            length, width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
         
         else:
-            self.length, self.width = RectangleCalculator.__valiate_input_number(self.length, self.width)
+            length, width = RectangleCalculator.__valiate_input_number(self.length, self.width)
         
-        if None in [self.length, self.width]:
+        if None in [length, width]:
             self.__area = None
         
         else:
-            self.__area = self.length * self.width # Name it as "self.__area" to prevent user from changing its value
+            self.__area = length * width # Name it as "self.__area" to prevent user from changing its value
         
         return self.__area
 
     
     def __save_output_file(self):
+        if None not in [self.length, self.width]:
+            length, width = self.length, self.width
+        
+        else:
+            length, width = self.__length, self.__width
+        
         result_dict = {
-            "length": self.length,
-            "width": self.width,
+            "length": length,
+            "width": width,
             "perimeter": self.perimeter,
             "area": self.area
         }
@@ -197,14 +203,19 @@ class RectangleCalculator:
         
         match str(self._output):
             case "":
+                if None not in [self.length, self.width]:
+                    length, width = self.length, self.width
+                
+                else:
+                    length, width = self.__length, self.__width
 
                 perimeter_result = colored(f"++ Perimeter = 2 * ({self.length} + {self.width}) = {self.perimeter}", "cyan", attrs=["bold"])
                 area_result = colored(f"++ Area = {self.length} * {self.width} = {self.area}", "cyan", attrs=["bold"])
 
                 out_message = (
                     f"\n\nResult of the {rectangle_output_name} rectangle:\n"
-                    f"++ Length = {self.length}\n"
-                    f"++ Width = {self.width}\n"
+                    f"++ Length = {length}\n"
+                    f"++ Width = {width}\n"
                     f"{perimeter_result}\n"
                     f"{area_result}\n"
                 )    
@@ -243,7 +254,6 @@ class RectangleCalculator:
                 
                 elif (None in [self.length, self.width]) and (None not in [self.__length, self.__width]):
                     logger.debug("Detected valid inputs given by -l (--length) and -w (--width), using them for calculation")
-                    self.length, self.width = self.__length, self.__width
                     json_rectangle_file = "" # To avoid using the name of corrupted file in the summary()
             
                 self._single_output_path = self.__validate_output_file(self._output)
@@ -258,7 +268,6 @@ class RectangleCalculator:
             
             else:
                 self._single_output_path = self.__validate_output_file(self._output)
-
         
         if self._single_output_path is not None:
             self.summary(self._single_output_path)
