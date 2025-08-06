@@ -31,10 +31,10 @@ class RectangleCalculator:
         '''
         self._input = ''
         self._output = ''
-        self.__length = length
-        self.__width = width
-        self.length = None
-        self.width = None
+        self.length = length
+        self.width = width
+        self.__length = None
+        self.__width = None
         self._cores = 2
         self._single_output_path = None
         self._json_count = 0
@@ -144,11 +144,11 @@ class RectangleCalculator:
 
     @property
     def perimeter(self):
-        if (None in [self.length, self.width]) or (str(self._input) == "") or (not Path(self._input).exists()):
-            length, width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
+        if (None in [self.__length, self.__width]) or (str(self._input) == "") or (not Path(self._input).exists()):
+            length, width = RectangleCalculator.__valiate_input_number(self.length, self.width)
         
         else:
-            length, width = RectangleCalculator.__valiate_input_number(self.length, self.width)
+            length, width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
         
         if None in [length, width]:
             self.__perimeter = None
@@ -161,11 +161,11 @@ class RectangleCalculator:
 
     @property
     def area(self):
-        if (None in [self.length, self.width]) or (str(self._input) == "") or (not Path(self._input).exists()):
-            length, width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
+        if (None in [self.__length, self.__width]) or (str(self._input) == "") or (not Path(self._input).exists()):
+            length, width = RectangleCalculator.__valiate_input_number(self.length, self.width)
         
         else:
-            length, width = RectangleCalculator.__valiate_input_number(self.length, self.width)
+            length, width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
         
         if None in [length, width]:
             self.__area = None
@@ -177,11 +177,11 @@ class RectangleCalculator:
 
     
     def __save_output_file(self):
-        if None not in [self.length, self.width]:
-            length, width = self.length, self.width
+        if None not in [self.__length, self.__width]:
+            length, width = self.__length, self.__width
         
         else:
-            length, width = self.__length, self.__width
+            length, width = self.length, self.width
         
         result_dict = {
             "length": length,
@@ -210,11 +210,11 @@ class RectangleCalculator:
         rectangle_output_name = colored(str(rectangle_output_name), (139, 0, 0), attrs=["bold"])
         prioritize_message = colored(", prioritize them for calculation.", "yellow", attrs = ['bold'])
 
-        if None not in [self.length, self.width]:
-            length, width = self.length, self.width
+        if None not in [self.__length, self.__width]:
+            length, width = self.__length, self.__width
         
         else:
-            length, width = [self.__length, self.__width]
+            length, width = [self.length, self.width]
         
         match str(self._output):
             case "":
@@ -239,13 +239,13 @@ class RectangleCalculator:
                     return None
                 
                 else:
-                    if (str(self._input) != "") and (Path(self._input).exists()) and (None not in [self.__length, self.__width, self.length, self.width]):
+                    if (str(self._input) != "") and (Path(self._input).exists()) and (None not in [self.length, self.width, self.__length, self.__width]):
                         logger.warning(f"Detected valid inputs in {rectangle_output_name}{prioritize_message}\n")
                                         
                     return out_message # This will make thi message printed out when being imported, avoid showing twice
             
             case _:
-                if (str(self._input) != "") and (Path(self._input).exists()) and (None not in [self.__length, self.__width, self.length, self.width]):
+                if (str(self._input) != "") and (Path(self._input).exists()) and (None not in [self.length, self.width, self.__length, self.__width]):
                     logger.warning(f"Detected valid inputs in {rectangle_output_name}{prioritize_message}\n")
                 
                 self.__save_output_file()
@@ -254,27 +254,27 @@ class RectangleCalculator:
 
 
     def _single_workflow(self, json_rectangle_file):
-        self.__length, self.__width = RectangleCalculator.__valiate_input_number(self.__length, self.__width)
+        self.length, self.width = RectangleCalculator.__valiate_input_number(self.length, self.width)
         
         if json_rectangle_file != '': # If the input JSON file is given, use its data for calculation
-            self.length, self.width = self.__load_rectangle_inputs(json_rectangle_file)    
+            self.__length, self.__width = self.__load_rectangle_inputs(json_rectangle_file)    
 
             if Path(self._input).is_dir() and (self._json_count >= 2):  
                 self._single_output_path = self.__validate_output_file(json_rectangle_file)
                 
             elif ((Path(self._input).is_dir()) and (self._json_count == 1)) or (Path(self._input).is_file()):
-                if (None in [self.length, self.width]) and (None in [self.__length, self.__width]):
+                if (None in [self.__length, self.__width]) and (None in [self.length, self.width]):
                     self._output = "" # To avoid displaying the log "The result is saved in None"
                     return None
                 
-                elif (None in [self.length, self.width]) and (None not in [self.__length, self.__width]):
+                elif (None in [self.__length, self.__width]) and (None not in [self.length, self.width]):
                     logger.debug("Detected valid inputs given by -l (--length) and -w (--width), using them for calculation\n")
                     json_rectangle_file = "" # To avoid using the name of corrupted file in the summary()
             
                 self._single_output_path = self.__validate_output_file(self._output)
         
         else:            
-            if (None in [self.__length, self.__width]) and (None in [self.length, self.width]): # Check if the given inputs from -l and -w are valid
+            if (None in [self.length, self.width]) and (None in [self.__length, self.__width]): # Check if the given inputs from -l and -w are valid
                 logger.critical("NO valid inputs were given! They are expected to be POSITIVE NUMBERS (greater than zero)")
                 print()
                 self._output = "" # To avoid displaying the log "The result is saved in None"
