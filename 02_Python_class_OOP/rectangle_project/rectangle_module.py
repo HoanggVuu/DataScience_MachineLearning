@@ -49,7 +49,8 @@ class RectangleCalculator:
                 if (Path(self._output).suffix != ""):
                     self._output = Path(self._output)
                     self._output = self._output.parent / self._output.stem # Create a new path without the suffix
-                    logger.warning(f"You have passed inputs from multiple files, so the ouput path should be a directory, automatically set as {self._output}\n")
+                    output_path = colored(str(self._output), (139, 0, 0), attrs=["bold"])
+                    logger.warning(f"You have passed inputs from multiple files, so the ouput path should be a directory, automatically set as {output_path}\n")
                 
                 else:
                     self._output = Path(self._output)
@@ -94,11 +95,15 @@ class RectangleCalculator:
                 json_output_file.mkdir(exist_ok = True, parents = True)
             
             json_output_file = json_output_file.joinpath("nameless.json")
-            logger.warning(f"The given output file path is actually a directory, automatically set as {json_output_file}\n")
+
+            output_path = colored(str(json_output_file), (139, 0, 0), attrs=["bold"])
+            logger.warning(f"The given output file path is actually a directory, automatically set as {output_path}\n")
         
         elif json_output_file.suffix != ".json":
             json_output_file = json_output_file.parent.joinpath(json_output_file.stem + ".json")
-            logger.warning(f'The given output file path does not end with ".json", automatically set as {json_output_file}\n')
+
+            output_path = colored(str(json_output_file), (139, 0, 0), attrs=["bold"])
+            logger.warning(f'The given output file path does not end with ".json", automatically set as {output_path}\n')
 
         return json_output_file
 
@@ -193,11 +198,12 @@ class RectangleCalculator:
 
     
     def _display_saving_single_output_message(self):
+        result_path = colored(str(self._single_output_path), (139, 0, 0), attrs=["bold"])
         match str(self._output):
             case "":
                 return None
             case _:
-                logger.info(f"The result is saved in {self._single_output_path}\n")
+                logger.info(f"The result is saved in {result_path}\n")
 
     
     def summary(self, rectangle_output_name = "nameless"):
