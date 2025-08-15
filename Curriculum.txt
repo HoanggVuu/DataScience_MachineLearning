@@ -80,12 +80,12 @@
 + Univariate Analysis: descriptive statistics for quantitative variable, categorical count
 + Bivariate Analysis: Covariance, Correlation, Chi-squared test, T-test, Mann-Whitney U test, Wilcoxon signed rank test, ANOVA, Kruskal=Wallis test, ANOVA repeated measurements, Friedman test
 
-9. Calculus - Convex Optimization:
+8. Calculus - Convex Optimization:
 + SymPy: review limits, derivatives and integrals
 + Gradient Descent, Stochastic Gradient Descent
 + Convex Optimization
 
-10. Data Preprocessing:
+9. Data Preprocessing:
 + Column names "cleaning"
 + Text data handling
 + Handle Missing data
@@ -99,7 +99,7 @@
 + Train - Test - Split
 + Univariate plot: quantitative and categorical
 
-11. Supervised Learning:
+10. Supervised Learning:
 + Linear Regression, Regularization (L1, L2, ElasticNet), Polynomial Regression
 + Logistic Regression, Softmax Regression
 + Naive Bayes: Bernouli, Multinomial, Gaussian
@@ -107,10 +107,11 @@
 + Support Vector Machine
 + Ensemble: Decision Tree, Random Forest, Boosting, Bagging
 + Create pipeline to integrate preprocessing and training steps into one object
++ Model evaluation: plots and metrics
 + CrossValidation
 + Parameter Tunning, Grid Search, Randomized Search
 
-12. Unsupervised Learning:
+11. Unsupervised Learning:
 + Distance: Euclidean, Manhattan, ...
 + K-Means clustering
 + Hierachical clustering
@@ -122,8 +123,8 @@
 + Dimension Reduction: UMAP, t-SNE, LLE
 + Association Rules: Apriori, ECLAT
 
-13. Time Series Analysis:
+12. Time Series Analysis:
 + ARIMA
 + HoltWinters
 
-14. Data Analysis Workflow: put everything of the course into a step-by-step process
+13. Data Analysis Workflow: put everything of the course into a step-by-step process
