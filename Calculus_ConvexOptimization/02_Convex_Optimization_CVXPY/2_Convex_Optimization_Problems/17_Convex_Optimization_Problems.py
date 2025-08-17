@@ -6,20 +6,28 @@ LIST OF COMMON CONVEX OPTIMIZATION PROBLEM TYPES
 ================================================================================
 
 - Linear Programming (LP)
-- Linear-fractional program
-- Robust Linear Programming (RLP)
-- Stochastic Robust Linear Programming
+    Linear-fractional program
+    Robust Linear Programming (RLP)
+    Stochastic Robust Linear Programming
+
 - Quadratic Programming (QP)
-- Quadratically Constrained Quadratic Programming (QCQP)
+    Quadratically Constrained Quadratic Programming (QCQP)
+
 - Second-Order Cone Programming (SOCP)
-- Deterministic Robust LP via SOCP
-- Stochastic Robust LP via SOCP
+    Deterministic Robust LP via SOCP
+    Stochastic Robust LP via SOCP
+
 - Geometric Programming (GP)
-- Geometric program in convex form
-- Convex optimization with generalized inequality constraints
+    Geometric program in convex form
+    Convex optimization with generalized inequality constraints
+
 - Semidefinite Programming (SDP)
+
 - LP and SOCP as SDP
+
 - Vector optimization
+    Optimal and Pareto optimal points
+    Multicriterion (multi-objective) optimization
 
 ================================================================================
 '''
@@ -420,11 +428,11 @@ Vector optimization
 ================================================================================
 
 General vector optimization problem:
-    minimize (w.r.t. K)    f₀(x)
+    minimize (w.r.t. K)    f₀(x)         (w.r.t means "with respect to")
     subject to             fᵢ(x) ≼ 0,    i = 1,…,m  
                             hᵢ(x) = 0, i = 1,…,p  
 
-    • f₀: ℝⁿ → ℝᵠ is vector‐valued  
+    • f₀: ℝⁿ → ℝᵠ is vector-valued  
     • “minimize w.r.t. K” means find x such that f₀(x) is minimal under the partial order defined by proper cone K ⊆ ℝᵠ  
     • fᵢ: ℝⁿ → ℝ are scalar convex functions  
 
@@ -433,15 +441,102 @@ Convex vector optimization problem:
     subject to             fᵢ(x) ≤ 0,   i = 1,…,m  
                             A x = b  
 
-    • f₀ is K‐convex: for all x,y and θ∈[0,1],  
-        f₀(θx+(1–θ)y) ≼ θ f₀(x)+(1–θ) f₀(y)  
+    • f₀ is K-convex: for all x,y and θ∈[0,1],  
+        f₀(θx+(1-θ)y) ≼ θf₀(x)+(1-θ)f₀(y)  
     • scalar constraints fᵢ convex, equality constraints affine  
 
 Brief explanations:
-    - Objectives are vector‐valued; optimality means no other feasible point yields a strictly smaller vector in cone ordering  
-    - Trade‐offs between objectives characterized by Pareto frontier (set of nondominated solutions)  
+    - Objectives are vector-valued; optimality means no other feasible point yields a strictly smaller vector in cone ordering  
+    - Trade-offs between objectives characterized by Pareto frontier (set of nondominated solutions)  
     - Proper cone K (e.g., nonnegative orthant) defines preference direction in objective space  
-    - Can be scalarized via weighted sums or ε‐constraint methods to compute Pareto‐optimal points  
+    - Can be scalarized via weighted sums or ε-constraint methods to compute Pareto-optimal points  
     - Convexity ensures convex Pareto frontier and tractable computation of supported efficient points  
-    - Applications: multi‐criteria decision making, game theory, economics, engineering design  
+    - Applications: multi-criteria decision making, game theory, economics, engineering design
+
+=================================================================================
+Optimal and Pareto optimal points
+=================================================================================
+
+Set of achievable objective values:
+    𝒪 = {f₀(x) | x feasible}
+
+Definitions:
+    • Feasible x is optimal if f₀(x) is the minimum value of 𝒪
+    • Feasible x is Pareto optimal if f₀(x) is a minimal value of 𝒪
+
+Brief explanations:
+    - Optimal point: global minimum with respect to cone ordering (unique if it exists)
+    - Pareto optimal point: cannot be improved in all objectives simultaneously
+    - Minimal value: no other achievable point y ∈ 𝒪 satisfies y ≺_K f₀(x) (strictly dominated)
+    - Minimum value: f₀(x) ≼_K y for all y ∈ 𝒪 (globally best)
+    - Left diagram: single optimal point x* at lower-left corner of achievable set 𝒪
+    - Right diagram: Pareto frontier forms boundary where no point dominates others
+    - Pareto optimal points represent different trade-offs between conflicting objectives
+    - In practice, decision makers choose among Pareto optimal solutions based on preferences
+    - Convex problems have convex Pareto frontiers, making them easier to characterize
+
+=================================================================================
+Multicriterion (multi-objective) optimization
+=================================================================================
+
+Problem (vector optimization with K = ℝ₊ᵠ):
+    f₀(x) = (F₁(x), …, Fᵩ(x))  
+    minimize (w.r.t. K)    f₀(x)  
+    subject to             x feasible (e.g., fᵢ(x) ≤ 0, Ax = b)  
+
+Definitions:
+    • q different objectives Fᵢ(x); we want all Fᵢ small  
+    • Feasible x* is **optimal** if for all feasible y,  
+        f₀(x*) ≼ f₀(y)  
+      (objectives noncompeting; single global minimum)  
+    • Feasible xᵖᵒ is **Pareto optimal** if for any feasible y,  
+        f₀(y) ≼ f₀(xᵖᵒ) ⇒ f₀(y) = f₀(xᵖᵒ)  
+      (no other y strictly improves all objectives)
+
+Brief explanations:
+    - **Optimal point** exists only if objectives align (non-conflicting)  
+    - **Pareto optimal points** form the Pareto frontier where trade-offs occur  
+    - No single solution minimizes all objectives if they conflict  
+    - Solutions on Pareto frontier are **nondominated** under ℝ₊ᵩ ordering  
+    - **Scalarization** (weighted sum, ε-constraint) converts to single-objective problems to compute supported Pareto points  
+    - Convex multi-objective problems yield a convex Pareto frontier, facilitating efficient computation  
+    - Applications: engineering design, economics, portfolio selection, policy planning  
+
+================================================================================
+Scalarization for Multi-Objective Optimization
+================================================================================
+
+Problem (weighted sum method):
+    choose weight vector λ ≻ₖ 0  
+    minimize    λᵀf₀(x)  
+    subject to  fᵢ(x) ≤ 0,    i = 1,…,m  
+                hᵢ(x) = 0,    i = 1,…,p  
+
+Brief explanations:
+    - λ ∈ ℝ₊ᵠ (for K = ℝ₊ᵠ) assigns relative importance to each objective  
+    - The scalar objective λᵀf₀(x) is a convex combination when ∑λⱼ = 1  
+    - Solving the scalar problem yields a Pareto-optimal solution of the original vector problem  
+    - Different λ directions correspond to supporting hyperplanes touching the Pareto frontier  
+    - Varying λ over the positive cone can recover (almost) all supported Pareto points in convex problems  
+    - Unsupported (non-convex) portions of the Pareto frontier require other methods (ε-constraint, Benson’s algorithm)  
+    - Weighted sum is simple to implement and leverages standard single-objective solvers  
+
+
+================================================================================
+Scalarization for Multicriterion Problems (Example)
+================================================================================
+
+Problem (weighted sum of two objectives):
+    choose λ = (1, γ) with γ > 0  
+    minimize    ‖Ax - b‖₂² + γ ‖x‖₂²  
+
+Brief explanations:
+    - This is a weighted sum of data-fitting (least-squares) and regularization objectives  
+    - γ controls the trade-off: larger γ places more weight on keeping x small (regularization)  
+    - For each fixed γ, the problem is a standard least-squares problem with Tikhonov (ℓ₂) regularization  
+    - Solutions for different γ trace out the Pareto frontier between fitting error and solution norm  
+    - The curve in objective space shows achievable pairs (‖Ax-b‖₂², ‖x‖₂²) and their trade-offs  
+    - At γ=1, the tangent to the Pareto frontier corresponds to weight vector λ=(1,1)  
+    - Scalarization leverages efficient linear-algebra solvers to compute Pareto-optimal points  
+
 '''
