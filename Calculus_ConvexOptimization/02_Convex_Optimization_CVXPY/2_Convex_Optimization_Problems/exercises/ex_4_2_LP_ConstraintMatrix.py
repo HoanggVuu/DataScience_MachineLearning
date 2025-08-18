@@ -29,8 +29,8 @@ import numpy as np
 ## Define the variables
 #--------------------------------
 
-x1 = cp.Variable()
-x2 = cp.Variable()
+x1 = cp.Variable(name = "x1")
+x2 = cp.Variable(name = "x2")
 
 #--------------------------------
 ## Define the constraints
