@@ -2,7 +2,7 @@ termcolor
 loguru
 numpy 
 "jax[cuda12]" or "jax[rocm]"
-pandas datar[pandas] polars tidypolars
+pandas datar[pandas] polars
 matplotlib seaborn plotnine plotly
 scipy statsmodels
 sympy cvxpy
@@ -10,6 +10,7 @@ scikit-learn
 imblearn
 xgboost
 hdbscan
+umap
 
 
 ###############################
@@ -23,12 +24,9 @@ Use conda-forge for stable version
 2) Go to (base) environment
 
 3) Run this command to create a conda environment and install libraries: 
-   conda create -c conda-forge -n data python=3.12 termcolor loguru numpy jaxlib=*=*cuda* jax cuda-nvcc pandas datar[pandas] polars matplotlib seaborn plotnine plotly scipy statsmodels sympy cvxpy scikit-learn imbalanced-learn xgboost hdbscan
+   conda create -c conda-forge -n data python=3.12 termcolor loguru numpy jaxlib=*=*cuda* jax cuda-nvcc pandas datar[pandas] polars matplotlib seaborn plotnine plotly scipy statsmodels sympy cvxpy scikit-learn imbalanced-learn xgboost hdbscan umap
 
-4) Run this command to create a separate environment for tidypolars:
-   conda create -c conda-forge -n tidypolars python=3.11 termcolor loguru numpy pandas datar[pandas] polars tidypolars matplotlib seaborn plotnine plotly scipy statsmodels sympy cvxpy scikit-learn imbalanced-learn xgboost hdbscan
-
-5) install jax
+4) install jax
    pip3 install -U "jax[cuda12]" # for NVIDIA user
    pip3 install -U jax[rocm] # for AMD user
 
@@ -52,15 +50,9 @@ Use pip3 install -U for latest versions
 5) Install libraries:
    pip3 install -U termcolor loguru numpy pandas datar[pandas] polars matplotlib seaborn plotnine plotly scipy statsmodels sympy cvxpy scikit-learn imblearn xgboost hdbscan
 
-6) for tidypolars:
-   conda create -n tidypolars python=3.11
-   conda activate tidypolars
-   pip3 install -U termcolor loguru numpy pandas datar[pandas] polars tidypolars matplotlib seaborn plotnine plotly scipy statsmodels sympy cvxpy scikit-learn imblearn xgboost hdbscan
-
-5) install jax
+6) install jax
    pip3 install -U "jax[cuda12]" # for NVIDIA user
    pip3 install -U jax[rocm] # for AMD user
-
 
 
 #-----------------------------------------------------------------------------------------------------------#
