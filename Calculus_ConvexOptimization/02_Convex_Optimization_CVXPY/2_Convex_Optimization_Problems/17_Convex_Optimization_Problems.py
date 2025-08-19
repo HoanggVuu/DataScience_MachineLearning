@@ -368,21 +368,20 @@ Semidefinite Programming (SDP)
 ================================================================================
 
 Problem:
-    minimize    cᵀx  
-    subject to  x₁F₁ + x₂F₂ + … + xₙFₙ + G ≼ₛ₊ 0  
-                Ax = b  
-    (Fᵢ, G ∈ Sᵏ)
+    minimize    tr(CX)
+    subject to  tr(Aᵢ X) = bᵢ,   i = 1, …, p
+                X ⪰ 0,
 
-Notes:
-    - Inequality constraint is a linear matrix inequality (LMI): X ≼ₛ₊ 0 ⇔ X is positive semidefinite  
-    - Can include multiple LMIs by block-diagonal aggregation into a single LMI  
+Where tr() is the trace function, X ∈ Sⁿ is the optimization variable and C, A₁, …, A_p ∈ Sⁿ, 
+and b₁, …, b_p ∈ ℝ are problem data, and X ⪰ 0 is a matrix inequality. 
+Here Sⁿ denotes the set of n-by-n symmetric matrices.
 
 Brief explanations:
     - Extends conic form to the positive semidefinite cone S₊ᵏ  
     - LMI constraints model requirements on eigenvalues of affine matrix expressions  
     - Convex problem: feasible set is an intersection of affine “slices” of the PSD cone  
     - Solvable by interior-point methods with polynomial-time complexity  
-    - Duality yields semidefinite dual problem with strong duality under Slater’s condition  
+    - Duality yields semidefinite dual problem with strong duality under Slater's condition  
     - Applications: control system design (Lyapunov inequalities), covariance estimation, quantum information  
     - Special cases: when k=1 reduces to an SOCP (scalar PSD cone), when Fᵢ are diagonal reduces to an LP  
     - SDP relaxations provide tractable bounds for hard combinatorial problems (e.g., Max-Cut)  
