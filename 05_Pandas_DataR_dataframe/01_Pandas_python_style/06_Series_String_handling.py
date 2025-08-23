@@ -22,15 +22,13 @@ Flow of contents:
    - Stripping: .strip(), .lstrip(), .rstrip()
 
 3. Checking methods (Boolean returns):
-   - Character type checks: .isalpha(), .isdigit(), .isalnum(), .isnumeric(), .isspace()
+   - Character type checks: .isalpha(), .isdigit(), .isnumeric(), .isdecimal(), .isalnum(), .isspace()
    - Case checks: .isupper(), .islower(), .istitle()
    - Pattern checks: .startswith(prefix), .endswith(suffix), .contains(pattern)
 
-4. Splitting:
-   - .split(delimiter)
-   - .rsplit(delimiter)
-   - .partition(separator)
-   - .rpartition(separator)
+4. Split and Partion:
+   - Spliting: .split(delimiter), .rsplit(delimiter)
+   - Partioning: .partition(separator), .rpartition(separator)
    
 5. Joinning: .join(delimiter)
 
@@ -380,6 +378,411 @@ print(s_spaced.str.lstrip().to_list())
 
 print(s_spaced.str.rstrip().to_list())
 # ['  hello', '  pandas', '  data science']
+
+
+#---------------------------------------------------------------------------------------------------------#
+#---------------------------------------- 3. Checking methods --------------------------------------------#
+#---------------------------------------------------------------------------------------------------------#
+
+###########################
+## Character type checks ##
+###########################
+
+s_check = pd.Series(['Hello', 'WORLD', '123', '225.2', '⅕', '³', 'Hello123', '   ', ''])
+
+#-----------
+## .isalpha()
+#-----------
+# Check if all characters are alphabetic
+
+print(s_check.str.isalpha())
+# 0     True ('Hello')
+# 1     True ('WORLD')
+# 2    False
+# 3    False
+# 4     True
+# 5    False
+# 6    False
+# 7    False
+# 8    False
+# dtype: bool
+
+#-----------
+## .isdigit()
+#-----------
+# Check if all characters are digits
+
+print(s_check.str.isdigit())
+# 0    False
+# 1    False
+# 2     True ('123')
+# 3    False
+# 4    False
+# 5    True ('³')
+# 6    False
+# 7    False
+# 8    False
+# dtype: bool
+
+#-----------
+## .isnumeric()
+#-----------
+# Check if all characters are numeric (includes digits and numeric characters like fractions)
+
+print(s_check.str.isnumeric())
+# 0    False
+# 1    False
+# 2     True ('123')
+# 3    False
+# 4     True ('⅕')
+# 5     True ('³')
+# 6    False
+# 7    False
+# 8    False
+# dtype: bool
+
+#-----------
+## .isdecimal()
+#-----------
+# Checks for characters used to form numbers in base 10
+
+print(s_check.str.isdecimal())
+# 0    False
+# 1    False
+# 2     True ('123')
+# 3    False
+# 4    False
+# 5    False
+# 6    False
+# 7    False
+# 8    False
+# dtype: bool
+
+#-----------
+## .isalnum()
+#-----------
+# Check if all characters are alphanumeric (letters and numbers)
+
+print(s_check.str.isalnum())
+# 0     True ('Hello')
+# 1     True ('WORLD')
+# 2     True ('123')
+# 3    False 
+# 4     True ('⅕')
+# 5     True ('³')
+# 6     True ('Hello123')
+# 7    False
+# 8    False
+# dtype: bool
+
+#-----------
+## .isspace()
+#-----------
+# Check if all characters are whitespace
+
+print(s_check.str.isspace())
+# 0    False
+# 1    False
+# 2    False
+# 3    False
+# 4    False
+# 5    False
+# 6    False
+# 7     True ('   ')
+# 8    False
+# dtype: bool
+
+
+#####################
+##   Case checks   ##
+#####################
+
+s_check = pd.Series(['Hello', 'WORLD', 'Hello World', 'hello123', '   ', ''])
+
+#-----------
+## .isupper()
+#-----------
+# Check if all characters are uppercase
+
+print(s_check.str.isupper())
+# 0    False
+# 1     True ('WORLD')
+# 2    False
+# 3    False
+# 4    False
+# 5    False
+# dtype: bool
+
+#-----------
+## .islower()
+#-----------
+# Check if all characters are lowercase
+
+print(s_check.str.islower())
+# 0    False
+# 1    False
+# 2    False
+# 3     True ('hello123')
+# 4    False
+# 5    False
+# dtype: bool
+
+#-----------
+## .istitle()
+#-----------
+# Check if the string is titlecased (first letter of each word is uppercase)
+
+print(s_check.str.istitle())
+# 0     True ('Hello')
+# 1    False
+# 2     True  ('Hello World')
+# 3    False
+# 4    False
+# 5    False
+# dtype: bool
+
+
+############################
+##     Pattern checks     ##
+############################
+
+#-----------
+## .startswith(prefix)
+#-----------
+# Check if strings start with the specified prefix
+
+s_start = s = pd.Series(['bat', 'Bear', 'cat', np.nan])
+
+print(s_start.str.startswith('b'))
+# 0     True ('bat')
+# 1    False
+# 2    False
+# 3      NaN
+# dtype: object
+
+print(s_start.str.startswith(pat = ('b', 'B'), na = False)) # Treat NaN as False
+# 0     True
+# 1     True
+# 2    False
+# 3    False
+# dtype: bool
+
+#-----------
+## .endswith(suffix)
+#-----------
+# Check if strings end with the specified suffix
+
+s_end = pd.Series(['bat', 'bear', 'caT', np.nan])
+
+print(s_end.str.endswith('t'))
+# 0     True ('bat')
+# 1    False
+# 2    False
+# 3      NaN
+# dtype: object
+
+print(s_end.str.endswith(pat = ('t', 'T'), na = False)) # Treat NaN as False
+# 0     True ('bat')
+# 1    False 
+# 2     True ('caT')
+# 3    False
+# dtype: bool
+
+#-----------
+## .contains(pattern)
+#-----------
+# Check if strings contain the specified pattern (can be a substring or regex)
+
+s_contain = pd.Series(['Mouse', 'dog', 'house and parrot', '23', np.nan])
+
+print(s_contain.str.contains(pat = 'og', regex = False))
+# 0    False
+# 1     True ('dog')
+# 2    False
+# 3    False
+# 4      NaN
+# dtype: object
+
+print(s_contain.str.contains(pat = 'oG', regex = False))
+# 0    False
+# 1    False
+# 2    False
+# 3    False
+# 4      NaN
+# dtype: object
+
+print(s_contain.str.contains(pat = 'oG', case = False, regex = False, na = False)) # Case insensitive, Treat NaN as False
+# 0    False
+# 1     True ('dog')
+# 2    False
+# 3    False
+# 4    False
+# dtype: bool
+
+print(s_contain.str.contains(pat = r"\d|parrot|Mo", regex = True, na = False)) # Regex pattern, Treat NaN as False
+# 0     True ('Mouse' contains 'Mo')
+# 1    False
+# 2     True ('house and parrot' contains 'parrot')
+# 3     True ('23' contains digit '\d')
+# 4    False
+# dtype: bool
+
+
+#---------------------------------------------------------------------------------------------------------#
+#--------------------------------------- 4. Split and Partion --------------------------------------------#
+#---------------------------------------------------------------------------------------------------------#
+
+#######################
+##     Splitting     ##
+#######################
+
+s_split = pd.Series(['apple_banana_cherry', 'dog_cat', 'one_two_three_four', np.nan])
+
+#-----------
+## .split(delimiter)
+#-----------
+# Split strings by the specified delimiter
+# By default, pat='\s+' (whitespace) and n=-1 (all occurrences)
+
+print(s_split.str.split('_'))
+# 0    [apple, banana, cherry]
+# 1                 [dog, cat]
+# 2    [one, two, three, four]
+# 3                        NaN
+# dtype: object
+
+print(s_split.str.split(pat = '_', n = 2))  # Split up to 2 delimiters only (results in at most 3 parts)
+# 0    [apple, banana, cherry]
+# 1                 [dog, cat]
+# 2     [one, two, three_four]
+# 3                        NaN
+# dtype: object
+
+print(s_split.str.split(pat = '_', expand= True))  # Expand into separate columns
+#        0       1       2     3
+# 0  apple  banana  cherry  None
+# 1    dog     cat    None  None
+# 2    one     two   three  four
+# 3    NaN     NaN     NaN   NaN
+
+#------------
+## .rsplit(delimiter)
+#------------
+# Split strings by the specified delimiter from the right
+# By default, pat='\s+' (whitespace) and n=-1 (all occurrences)
+
+print(s_split.str.rsplit('_'))
+# 0    [apple, banana, cherry]
+# 1                 [dog, cat]
+# 2    [one, two, three, four]
+# 3                        NaN
+# dtype: object
+
+print(s_split.str.rsplit(pat = '_', n = 2))  # Split up to 2 delimiters only from the right (results in at most 3 parts)
+# 0    [apple, banana, cherry]
+# 1                 [dog, cat]
+# 2     [one_two, three, four]
+# 3                        NaN
+# dtype: object
+
+'''
+.str.split() => [one, two, three_four]
+.str.rsplit() => [one_two, three, four]
+'''
+
+print(s_split.str.rsplit(pat = '_', n = 2, expand= True))  # Expand into separate columns
+#          0       1       2
+# 0    apple  banana  cherry
+# 1      dog     cat    None
+# 2  one_two   three    four
+# 3      NaN     NaN     NaN
+
+
+#########################
+##     Partioning      ##
+#########################
+
+s_partition = pd.Series(['apple-banana-cherry', 'dog-cat', 'one-two-three-four', np.nan])
+
+#--------------
+## .partition(separator)
+#--------------
+# Split strings at the first occurrence of the specified separator
+# By default, sep=' ' (whitespace)
+
+print(s_partition.str.partition('-'))
+#        0    1               2
+# 0  apple    -   banana-cherry
+# 1    dog    -             cat
+# 2    one    -  two-three-four
+# 3    NaN  NaN             NaN
+
+print(s_partition.str.partition(sep = 'a'))  # Split at first 'a'
+#                     0    1                   2
+# 0                        a  pple-banana-cherry
+# 1               dog-c    a                   t
+# 2  one-two-three-four                         
+# 3                 NaN  NaN                 NaN
+
+print(s_partition.str.partition(sep = '-', expand = False)) # Return as tuples, not expanded DataFrame
+# 0    (apple, -, banana-cherry)
+# 1                (dog, -, cat)
+# 2     (one, -, two-three-four)
+# 3                          NaN
+# dtype: object
+
+#----------------
+## .rpartition(separator)
+#----------------
+# Split strings at the last occurrence of the specified separator
+# By default, sep=' ' (whitespace)
+
+print(s_partition.str.rpartition('-'))
+#                0    1       2
+# 0   apple-banana    -  cherry
+# 1            dog    -     cat
+# 2  one-two-three    -    four
+# 3            NaN  NaN     NaN
+
+print(s_partition.str.rpartition(sep = 'a'))  # Split at last 'a'
+#              0    1                   2
+# 0  apple-banan    a             -cherry
+# 1        dog-c    a                   t
+# 2                    one-two-three-four
+# 3          NaN  NaN                 NaN
+
+print(s_partition.str.rpartition(sep = '-', expand = False)) # Return as tuples, not expanded DataFrame
+# 0    (apple-banana, -, cherry)
+# 1                (dog, -, cat)
+# 2     (one-two-three, -, four)
+# 3                          NaN
+# dtype: object
+
+
+#---------------------------------------------------------------------------------------------------------#
+#------------------------------------------ 5. Joinning --------------------------------------------------#
+#---------------------------------------------------------------------------------------------------------#
+
+'''
+join(separator) - Join list elements with separator
+'''
+
+s_join = pd.Series([['apple', 'banana', 'cherry'], ['dog', 'cat'], ['one', 'two', 'three', 'four'], np.nan])
+
+print(s_join.str.join('-'))
+# 0    apple-banana-cherry
+# 1                dog-cat
+# 2     one-two-three-four
+# 3                    NaN
+# dtype: object
+
+print(s_join.str.join(sep = ' || '))
+# 0      apple || banana || cherry
+# 1                     dog || cat
+# 2    one || two || three || four
+# 3                            NaN
+# dtype: object
+
 
 #---------------------------------------------------------------------------------------------------------#
 #--------------------------------------- 12. Real applications -------------------------------------------#
