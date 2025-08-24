@@ -547,3 +547,182 @@ print(s_reordered)
 # 8    3rd
 # dtype: category
 # Categories (5, object): ['5th' < '4th' < '3rd' < '2nd' < '1st']
+
+
+#---------------------------------------------------------------------------------------------------------------#
+#---------------------------------------- 5. Ordered Categories ------------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------#
+
+'''
+Ordered categories have a meaningful order, allowing for comparisons and sorting.
+
+Can use .cat.as_ordered() to convert unordered categories to ordered ones.
+(then use .cat.reorder_categories() to set a specific order if needed)
+'''
+
+s_sizes = pd.Series(["Medium", "Small", "Large", "Medium", "Small", "Large"], dtype = 'category')
+
+print(s_sizes)
+# 0    Medium
+# 1     Small
+# 2     Large
+# 3    Medium
+# 4     Small
+# 5     Large
+# dtype: category
+# Categories (3, object): ['Large', 'Medium', 'Small']
+
+print(s_sizes.cat.ordered)
+# False
+
+
+############################################################
+## Use .cat.as_ordered() to convert to ordered categories ##
+############################################################
+
+s_sizes_ordered = s_sizes.cat.as_ordered()
+
+print(s_sizes_ordered.cat.ordered)
+# True
+
+print(s_sizes_ordered)
+# 0    Medium
+# 1     Small
+# 2     Large
+# 3    Medium
+# 4     Small
+# 5     Large
+# dtype: category
+# Categories (3, object): ['Large' < 'Medium' < 'Small']
+
+'''Use .cat.reorder_categories() to set a specific order'''
+
+s_sizes_ordered = s_sizes_ordered.cat.reorder_categories(
+    new_categories = ["Small", "Medium", "Large"], # New order of categories
+    ordered = True # Set to True if you want to treat categories as ordered
+)
+
+print(s_sizes_ordered)
+# 0    Medium
+# 1     Small
+# 2     Large
+# 3    Medium
+# 4     Small
+# 5     Large
+# dtype: category
+# Categories (3, object): ['Small' < 'Medium' < 'Large']
+
+'''Combine both steps with method chaining'''
+
+s_sizes_ordered = (
+    s_sizes
+    .cat.as_ordered()
+    .cat.reorder_categories(
+        new_categories = ["Small", "Medium", "Large"],
+        ordered = True
+    )
+)
+print(s_sizes_ordered)
+# 0    Medium
+# 1     Small
+# 2     Large
+# 3    Medium
+# 4     Small
+# 5     Large
+# dtype: category
+# Categories (3, object): ['Small' < 'Medium' < 'Large']
+
+
+#########################################
+## Meaningful min(), max() and sorting ##
+#########################################
+
+print(s_sizes_ordered.min()) # Small
+print(s_sizes_ordered.max()) # Large
+
+print(s_sizes_ordered.sort_values())
+# 1     Small
+# 4     Small
+# 0    Medium
+# 3    Medium
+# 2     Large
+# 5     Large
+# dtype: category
+# Categories (3, object): ['Small' < 'Medium' < 'Large']
+
+print(s_sizes_ordered.sort_values(ascending = False))
+# 2     Large
+# 5     Large
+# 0    Medium
+# 3    Medium
+# 1     Small
+# 4     Small
+# dtype: category
+# Categories (3, object): ['Small' < 'Medium' < 'Large']
+
+
+#---------------------------------------------------------------------------------------------------------------#
+#--------------------------------------- 6. Unordered Categories -----------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------#
+
+'''
+Unordered categories do not have a meaningful order, treating categories as nominal.
+
+Can use .cat.as_unordered() to convert ordered categories to unordered ones.
+'''
+
+s_gender = pd.Series(
+    pd.Categorical(
+        values = ["M", "M", "F", "M", "LGBTQ", "F", "M", "F", "LGBTQ", "M"],
+        categories = ["LGBTQ", "F", "M"],
+        ordered = True
+    )
+)
+
+print(s_gender)
+# 0        M
+# 1        M
+# 2        F
+# 3        M
+# 4    LGBTQ
+# 5        F
+# 6        M
+# 7        F
+# 8    LGBTQ
+# 9        M
+# dtype: category
+# Categories (3, object): ['LGBTQ' < 'F' < 'M']
+
+print(s_gender.cat.ordered)
+# True
+
+
+################################################################
+## Use .cat.as_unordered() to convert to unordered categories ##
+################################################################
+
+s_gender_unordered = s_gender.cat.as_unordered()
+
+print(s_gender_unordered.cat.ordered)
+# False
+
+print(s_gender_unordered)
+# 0        M
+# 1        M
+# 2        F
+# 3        M
+# 4    LGBTQ
+# 5        F
+# 6        M
+# 7        F
+# 8    LGBTQ
+# 9        M
+# dtype: category
+# Categories (3, object): ['LGBTQ', 'F', 'M']
+
+
+print(s_gender_unordered.min())
+'''
+TypeError: Categorical is not ordered for operation min
+you can use .as_ordered() to change the Categorical to an ordered one
+'''
