@@ -15,6 +15,7 @@ Flow of contents:
 4. Reordering: .cat.reorder_categories()
 5. Ordered categories: .cat.as_ordered() (Support meaningful min(), max(), and sorting operations)
 6. Unordered categories: .cat.as_unordered() (Treat categories as nominal with no inherent order)
+7. Exploring Categorical: .unique(), .value_counts()
 '''
 
 import pandas as pd
@@ -726,3 +727,39 @@ print(s_gender_unordered.min())
 TypeError: Categorical is not ordered for operation min
 you can use .as_ordered() to change the Categorical to an ordered one
 '''
+
+
+#---------------------------------------------------------------------------------------------------------------#
+#--------------------------------------- 7. Exploring Categorical ----------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------#
+
+s_gender = pd.Series(["M", "M", "F", "M", "LGBTQ", "F", "M", "F", "LGBTQ", "M"], dtype = 'category')
+
+###############
+## .unique() ##
+###############
+# Returns the unique categories in the categorical/object Series.
+
+uniques = s_gender.unique()
+print(uniques)
+# ['M', 'F', 'LGBTQ']
+# Categories (3, object): ['F', 'LGBTQ', 'M']
+
+lst_uniques = s_gender.unique().tolist()
+print(lst_uniques)
+# ['M', 'F', 'LGBTQ']
+
+
+#####################
+## .value_counts() ##
+#####################
+# Returns a Series containing counts of unique categories
+
+print(s_gender.value_counts())
+# M        5
+# F        3
+# LGBTQ    2
+# Name: count, dtype: int64
+
+print(s_gender.value_counts().get("M")) # Get the count of category "M"
+# 5
