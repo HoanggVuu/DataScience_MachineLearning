@@ -28,16 +28,16 @@ Flow of contents:
     + .dt.quarter
     + .dt.days_in_month
 
-4. Boolean properties:
+4. Extract Python datetime objects:
+    + .dt.date: Returns datetime.date objects (date only)
+    + .dt.time: Returns datetime.time objects (time only)
+    + .dt.timetz: Returns datetime.time with timezone information
+
+5. Boolean properties:
     + .dt.is_month_start, .dt.is_month_end
     + .dt.is_quarter_start, .dt.is_quarter_end
     + .dt.is_year_start, .dt.is_year_end
     + .dt.is_leap_year
-
-5. Extract Python datetime objects:
-    + .dt.date: Returns datetime.date objects (date only)
-    + .dt.time: Returns datetime.time objects (time only)
-    + .dt.timetz: Returns datetime.time with timezone information
 
 6. String Representation Methods:
     + .dt.strftime(format): Custom string formatting using strftime codes
@@ -599,8 +599,59 @@ print(s_datetime.dt.days_in_month)
 '''March has 31 days'''
 
 
+
 #-------------------------------------------------------------------------------------------------------------#
-#---------------------------------------- 4. Boolean properties ----------------------------------------------#
+#----------------------------------- 4. Extract Python datetime objects --------------------------------------#
+#-------------------------------------------------------------------------------------------------------------#
+
+s_datetime = pd.Series(["1/1/2020 10:00:00+00:00", "2/1/2020 11:00:00+00:00"], dtype = 'datetime64[ns, UTC]')
+print(s_datetime)
+# 0   2020-01-01 10:00:00+00:00
+# 1   2020-02-01 11:00:00+00:00
+# dtype: datetime64[ns, UTC]
+
+##############
+## .dt.date ##
+##############
+# Returns datetime.date objects (date only)
+
+print(s_datetime.dt.date)
+# 0    2020-01-01
+# 1    2020-02-01
+# dtype: object
+
+print(type(s_datetime.dt.date[0]))
+# <class 'datetime.date'>
+
+##############
+## .dt.time ##
+##############
+# Returns datetime.time objects (time only)
+
+print(s_datetime.dt.time)
+# 0    10:00:00
+# 1    11:00:00
+# dtype: object
+
+print(type(s_datetime.dt.time[0]))
+# <class 'datetime.time'>
+
+################
+## .dt.timetz ##
+################
+# Returns datetime.time with timezone information
+
+print(s_datetime.dt.timetz)
+# 0    10:00:00+00:00 (the +00:00 indicates UTC timezone)
+# 1    11:00:00+00:00
+# dtype: object
+
+print(type(s_datetime.dt.timetz[0]))
+# <class 'datetime.time'>
+
+
+#-------------------------------------------------------------------------------------------------------------#
+#---------------------------------------- 5. Boolean properties ----------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------#
 
 ##########################################
