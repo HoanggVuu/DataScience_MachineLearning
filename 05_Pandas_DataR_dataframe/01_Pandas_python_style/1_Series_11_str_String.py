@@ -701,40 +701,43 @@ print(s_split.str.rsplit(pat = '_', n = 2, expand= True))  # Expand into separat
 ##     SPLIT INDEXING     ##
 ############################
 
-s_split = pd.Series(['apple_banana_cherry', 'dog_cat', 'one_two_three_four', np.nan])
+s_split = pd.Series(['day1_sample1', 'day1_sample2', 'day1_sample3', 'day2_sample4', 'day2_sample5', np.nan])
 
 print(s_split.str.split('_'))
-# 0    [apple, banana, cherry]
-# 1                 [dog, cat]
-# 2    [one, two, three, four]
-# 3                        NaN
+# 0    [day1, sample1]
+# 1    [day1, sample2]
+# 2    [day1, sample3]
+# 3    [day2, sample4]
+# 4    [day2, sample5]
+# 5                NaN
 # dtype: object
 
-print(s_split.str.split('_')[0]) # ['apple', 'banana', 'cherry']
-print(s_split.str.split('_')[3]) # nan
+print(s_split.str.split('_')[0]) # ['day1', 'sample1']
+print(s_split.str.split('_')[3]) # ['day2', 'sample4']
+print(s_split.str.split('_')[5]) # nan
 
 '''------------------------'''
 
 print(s_split.str.split(pat = '_', expand= True))  # Expand into separate columns
-#        0       1       2     3
-# 0  apple  banana  cherry  None
-# 1    dog     cat    None  None
-# 2    one     two   three  four
-# 3    NaN     NaN     NaN   NaN
+#       0        1
+# 0  day1  sample1
+# 1  day1  sample2
+# 2  day1  sample3
+# 3  day2  sample4
+# 4  day2  sample5
+# 5   NaN      NaN
 
-print(s_split.str.split('_').str[0])
-# 0    apple
-# 1      dog
-# 2      one
-# 3      NaN
+print(s_split.str.split('_').str[1])
+# 0    sample1
+# 1    sample2
+# 2    sample3
+# 3    sample4
+# 4    sample5
+# 5        NaN
 # dtype: object
 
-print(s_split.str.split('_').str[2])
-# 0    cherry
-# 1       NaN
-# 2     three
-# 3       NaN
-# dtype: object
+print(s_split.str.split('_').str[0].unique())
+# ['day1' 'day2' nan]
 
 #########################
 ##     Partioning      ##
