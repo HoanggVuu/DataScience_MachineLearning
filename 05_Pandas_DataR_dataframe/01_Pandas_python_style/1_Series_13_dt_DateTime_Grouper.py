@@ -1047,3 +1047,64 @@ print(s_converted)
 s_converted = s_datetime.dt.tz_convert('Zulu')
 # This will raise an error because s_datetime is timezone-naive
 '''TypeError: Cannot convert tz-naive timestamps, use tz_localize to localize'''
+
+
+#-------------------------------------------------------------------------------------------------------------#
+#---------------------------------------- 9. Timedelta handling ----------------------------------------------#
+#-------------------------------------------------------------------------------------------------------------#
+
+s_timedelta = pd.Series(pd.to_timedelta(['1 days 08:30:15', '2 days 12:45:30', '3 days 05:15:45']))
+print(s_timedelta)
+# 0   1 days 08:30:15
+# 1   2 days 12:45:30
+# 2   3 days 05:15:45
+# dtype: timedelta64[ns]
+
+####################
+## .dt.components ##
+####################
+'''Returns DataFrame with timedelta components'''
+
+print(s_timedelta.dt.components)
+#    days  hours  minutes  seconds  milliseconds  microseconds  nanoseconds
+# 0     1      8       30       15             0             0            0
+# 1     2     12       45       30             0             0            0
+# 2     3      5       15       45             0             0            0
+
+##############
+## .dt.days ##
+##############
+'''Days component'''
+
+print(s_timedelta.dt.days)
+# 0    1
+# 1    2
+# 2    3
+# dtype: int64
+
+#################
+## .dt.seconds ##
+#################
+'''Seconds component (0-86399) of ONE DAY'''
+
+print(s_timedelta.dt.seconds)
+# 0    30615
+# 1    45930 (12*3600 + 45*60 + 30)
+# 2    18945
+# dtype: int32
+
+#########################
+## .dt.total_seconds() ##
+#########################
+'''Total duration in seconds (across ALL DAYS)'''
+
+print(s_timedelta.dt.total_seconds())
+# 0    117015.0
+# 1    218730.0 (2*86400 + 12*3600 + 45*60 + 30)
+# 2    278145.0
+# dtype: float64
+
+'''
+NOTE: since these are all numeric values (int or float), you can perform numeric operations on them directly.
+'''
+
