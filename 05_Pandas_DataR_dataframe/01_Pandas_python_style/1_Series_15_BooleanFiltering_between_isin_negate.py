@@ -17,6 +17,7 @@ Flow of contents:
 3. Combine Multiple Conditions:
    + & (and),
    + | (or)
+   + Combine & and |
 '''
 
 import pandas as pd
@@ -80,7 +81,7 @@ print(s1_nums > 15)
 # 9     True
 # dtype: bool
 
-print(s1_nums[s1_nums > 15]) # Retuns values greater than 15 (True)
+print(s1_nums[s1_nums > 15]) # Returns values greater than 15 (True)
 # 1    19.51
 # 2    17.32
 # 3    15.99
@@ -89,7 +90,7 @@ print(s1_nums[s1_nums > 15]) # Retuns values greater than 15 (True)
 # 9    17.08
 # dtype: float64
 
-print(s2_nums[s2_nums > s1_nums]) # Retuns values greater than corresponding values (same index) in s1_nums
+print(s2_nums[s2_nums > s1_nums]) # Returns values greater than corresponding values (same index) in s1_nums
 # 3    19.00 (> 15.99)
 # 4    15.34 (> 11.56)
 # 5    12.47 (> 11.56)
@@ -101,13 +102,13 @@ print(s2_nums[s2_nums > s1_nums]) # Retuns values greater than corresponding val
 ## < (less than)
 #-------------
 
-print(s1_nums[s1_nums < 13]) # Retuns values less than 13 (True)
+print(s1_nums[s1_nums < 13]) # Returns values less than 13 (True)
 # 4    11.56
 # 5    11.56
 # 6    10.58
 # dtype: float64
 
-print(s2_nums[s2_nums < s1_nums]) # Retuns values less than corresponding values (same index) in s1_nums
+print(s2_nums[s2_nums < s1_nums]) # Returns values less than corresponding values (same index) in s1_nums
 # 0    13.21
 # 1    13.66
 # 2    17.10
@@ -119,7 +120,7 @@ print(s2_nums[s2_nums < s1_nums]) # Retuns values less than corresponding values
 ## >= (greater than or equal to)
 #-------------
 
-print(s1_nums[s1_nums >= 15.99]) # Retuns values greater than or equal to 15.99 (True)
+print(s1_nums[s1_nums >= 15.99]) # Returns values greater than or equal to 15.99 (True)
 # 1    19.51
 # 2    17.32
 # 3    15.99
@@ -128,7 +129,7 @@ print(s1_nums[s1_nums >= 15.99]) # Retuns values greater than or equal to 15.99 
 # 9    17.08
 # dtype: float64
 
-print(s2_nums[s2_nums >= s1_nums]) # Retuns values greater than or equal to corresponding values (same index) in s1_nums
+print(s2_nums[s2_nums >= s1_nums]) # Returns values greater than or equal to corresponding values (same index) in s1_nums
 # 3    19.00
 # 4    15.34
 # 5    12.47
@@ -140,13 +141,13 @@ print(s2_nums[s2_nums >= s1_nums]) # Retuns values greater than or equal to corr
 ## <= (less than or equal to)
 #-------------
 
-print(s1_nums[s1_nums <= 11.56]) # Retuns values less than or equal to 13 (True)
+print(s1_nums[s1_nums <= 11.56]) # Returns values less than or equal to 13 (True)
 # 4    11.56
 # 5    11.56
 # 6    10.58
 # dtype: float64
 
-print(s2_nums[s2_nums <= s1_nums]) # Retuns values less than or equal to corresponding values (same index) in s1_nums
+print(s2_nums[s2_nums <= s1_nums]) # Returns values less than or equal to corresponding values (same index) in s1_nums
 # 0    13.21
 # 1    13.66
 # 2    17.10
@@ -164,7 +165,7 @@ inclusive = "left": [left, right) or left <= x < right
 inclusive = "right": (left, right] or left < x <= right
 '''
 
-print(s1_nums[s1_nums.between(10, 15.99)]) # Retuns values between 10 and 15.99 (both inclusive)
+print(s1_nums[s1_nums.between(10, 15.99)]) # Returns values between 10 and 15.99 (both inclusive)
 # 0    13.75
 # 3    15.99
 # 4    11.56
@@ -172,7 +173,7 @@ print(s1_nums[s1_nums.between(10, 15.99)]) # Retuns values between 10 and 15.99 
 # 6    10.58
 # dtype: float64
 
-print(s1_nums[s1_nums.between(10, 15.99, inclusive = "left")]) # Retuns values between 15.99 (left inclusive)
+print(s1_nums[s1_nums.between(10, 15.99, inclusive = "left")]) # Returns values between 15.99 (left inclusive)
 # 0    13.75
 # 4    11.56
 # 5    11.56
@@ -184,19 +185,19 @@ print(s1_nums[s1_nums.between(10, 15.99, inclusive = "left")]) # Retuns values b
 ## == (equal to)
 #-------------
 
-print(s1_nums[s1_nums == 11.56]) # Retuns values equal to 11.56 (True)
+print(s1_nums[s1_nums == 11.56]) # Returns values equal to 11.56 (True)
 # 4    11.56
 # 5    11.56
 # dtype: float64
 
-print(s2_nums[s2_nums == s1_nums]) # Retuns values equal to corresponding values (same index) in s1_nums
+print(s2_nums[s2_nums == s1_nums]) # Returns values equal to corresponding values (same index) in s1_nums
 # Series([], dtype: float64)
 
 #-------------
 ## != (not equal to)
 #-------------
 
-print(s1_nums[s1_nums != 11.56]) # Retuns values not equal to 11.56 (True)
+print(s1_nums[s1_nums != 11.56]) # Returns values not equal to 11.56 (True)
 # 0    13.75
 # 1    19.51
 # 2    17.32
@@ -207,7 +208,7 @@ print(s1_nums[s1_nums != 11.56]) # Retuns values not equal to 11.56 (True)
 # 9    17.08
 # dtype: float64
 
-print(s2_nums[s2_nums != s1_nums]) # Retuns values not equal to corresponding values (same index) in s1_nums
+print(s2_nums[s2_nums != s1_nums]) # Returns values not equal to corresponding values (same index) in s1_nums
 # 0    13.21
 # 1    13.66
 # 2    17.10
@@ -236,14 +237,14 @@ print(s_mamals.isin(['cow', 'llama']))
 # 5    False
 # dtype: bool
 
-print(s_mamals[s_mamals.isin(['cow', 'llama'])]) # Retuns values that are either 'cow' or 'llama'
+print(s_mamals[s_mamals.isin(['cow', 'llama'])]) # Returns values that are either 'cow' or 'llama'
 # 0    llama
 # 1      cow
 # 2    llama
 # 4    llama
 # dtype: object
 
-print(s_mamals[s_mamals.isin(['llama'])]) # Retuns values that are 'llama'
+print(s_mamals[s_mamals.isin(['llama'])]) # Returns values that are 'llama'
 # 0    llama
 # 2    llama
 # 4    llama
@@ -258,11 +259,11 @@ import pytz
 
 s_timezones = pd.Series(pytz.all_timezones)
 
-print(s_timezones[s_timezones.str.contains("Seoul")]) # Retuns values that contain the substring "Africa"
+print(s_timezones[s_timezones.str.contains("Seoul")]) # Returns values that contain the substring "Africa"
 # 311    Asia/Seoul
 # dtype: object
 
-print(s_timezones[s_timezones.str.startswith("Australia")]) # Retuns values that start with "Australia"
+print(s_timezones[s_timezones.str.startswith("Australia")]) # Returns values that start with "Australia"
 # 347            Australia/ACT
 # 348       Australia/Adelaide
 # 349       Australia/Brisbane
@@ -288,13 +289,13 @@ print(s_timezones[s_timezones.str.startswith("Australia")]) # Retuns values that
 # 369     Australia/Yancowinna
 # dtype: object
 
-print(s_timezones[s_timezones.str.endswith("lu")]) # Retuns values that end with "lu"
+print(s_timezones[s_timezones.str.endswith("lu")]) # Returns values that end with "lu"
 # 426            Etc/Zulu
 # 544    Pacific/Honolulu
 # 596                Zulu
 # dtype: object
 
-print(s_timezones[s_timezones == "Zulu"]) # Retuns values that are exactly equal to "Zulu"
+print(s_timezones[s_timezones == "Zulu"]) # Returns values that are exactly equal to "Zulu"
 # 596    Zulu
 # dtype: object
 
@@ -316,11 +317,11 @@ print(s_datetime)
 # 6   2023-06-30
 # dtype: datetime64[ns]
 
-print(s_datetime[s_datetime.dt.is_quarter_start]) # Retuns values that are the start of a quarter
+print(s_datetime[s_datetime.dt.is_quarter_start]) # Returns values that are the start of a quarter
 # 0   2023-01-01
 # dtype: datetime64[ns]
 
-print(s_datetime[s_datetime.dt.is_quarter_end]) # Retuns values that are the end of a quarter
+print(s_datetime[s_datetime.dt.is_quarter_end]) # Returns values that are the end of a quarter
 # 3   2023-03-31
 # 6   2023-06-30
 # dtype: datetime64[ns]
@@ -363,7 +364,7 @@ print(~(s1_nums > 15))
 # dtype: bool
 
 # Apply in filtering
-print(s1_nums[~(s1_nums > 15)]) # Retuns values NOT greater than 15
+print(s1_nums[~(s1_nums > 15)]) # Returns values NOT greater than 15
 # 0    13.75
 # 4    11.56
 # 5    11.56
@@ -371,15 +372,130 @@ print(s1_nums[~(s1_nums > 15)]) # Retuns values NOT greater than 15
 # dtype: float64
 
 s_mamals =  pd.Series(['llama', 'cow', 'llama', 'beetle', 'llama', 'hippo'])
-print(s_mamals[~s_mamals.isin(['cow', 'llama'])]) # Retuns values that are neither 'cow' nor 'llama'
+print(s_mamals[~s_mamals.isin(['cow', 'llama'])]) # Returns values that are neither 'cow' nor 'llama'
 # 3    beetle
 # 5     hippo
 # dtype: object
 
-print(s_datetime[~s_datetime.dt.is_quarter_end]) # Retuns values that are NOT the end of a quarter
+print(s_datetime[~s_datetime.dt.is_quarter_end]) # Returns values that are NOT the end of a quarter
 # 0   2023-01-01
 # 1   2023-01-31
 # 2   2023-02-28
 # 4   2023-04-30
 # 5   2023-05-31
 # dtype: datetime64[ns]
+
+
+#----------------------------------------------------------------------------------------------------------------#
+#-------------------------------------- 3. Combine Multiple Conditions ------------------------------------------#
+#----------------------------------------------------------------------------------------------------------------#
+
+###########################
+##       & (and)         ##
+###########################
+'''True if only all the conditions (clauses) are True.'''
+
+print(s1_nums[(s1_nums > 12) & (s1_nums.round(0) % 2 == 0)]) # Returns values greater than 12 AND rounded value is even number
+# 0    13.75 (13.75 > 12 and rounded is 14, which is even)
+# 1    19.51 (19.51 > 12 and rounded is 20, which is even)
+# 3    15.99
+# 8    16.01
+# dtype: float64
+
+print(s1_nums[~((s1_nums > 12) & (s1_nums.round(0) % 2 == 0))]) # Returns the NEGATION of above condition
+# 2    17.32 (17.32 > 12 but rounded is 17, which is odd)
+# 4    11.56 (11.56 < 12)
+# 5    11.56
+# 6    10.58
+# 7    18.66
+# 9    17.08
+# dtype: float64
+
+import pytz
+s_timezones = pd.Series(pytz.all_timezones)
+print(s_timezones[s_timezones.str.contains("Asia") & s_timezones.str.endswith(pat = ("e", "u"))])
+# 240        Asia/Aqtau
+# 241       Asia/Aqtobe
+# 244       Asia/Atyrau
+# 247         Asia/Baku
+# 264     Asia/Dushanbe
+# 281    Asia/Kathmandu
+# 282     Asia/Katmandu
+# 290        Asia/Macau
+# 313    Asia/Singapore
+# 320       Asia/Thimbu
+# 321      Asia/Thimphu
+# 329    Asia/Vientiane
+# dtype: object
+
+###########################
+##       | (or)          ##
+###########################
+'''False if only all the conditions (clauses) are False.'''
+
+print(s1_nums[(s1_nums < 12) | (s1_nums > 18)]) # Returns values less than 12 OR greater than 18
+# 1    19.51
+# 4    11.56
+# 5    11.56
+# 6    10.58
+# 7    18.66
+# dtype: float64
+
+print(s1_nums[~((s1_nums < 12) | (s1_nums > 18))]) # Returns the NEGATION of above condition
+# 0    13.75
+# 2    17.32
+# 3    15.99
+# 8    16.01
+# 9    17.08
+# dtype: float64
+
+import pytz
+s_tzs = pd.Series(pytz.all_timezones)
+print(s_tzs[s_tzs.str.contains("Kyoto") | s_tzs.str.contains("Tokyo") | s_tzs.str.contains("Seoul")])
+# 311    Asia/Seoul
+# 322    Asia/Tokyo
+# dtype: object
+
+
+###############################
+##      Combine & and |      ##
+###############################
+
+print(s1_nums[((s1_nums < 12) | (s1_nums > 18)) & (s1_nums.round(0) % 2 == 0)])
+# 1    19.51
+# 4    11.56
+# 5    11.56
+# dtype: float64
+
+print(s1_nums[~(((s1_nums < 12) | (s1_nums > 18)) & (s1_nums.round(0) % 2 == 0))])
+# 0    13.75
+# 2    17.32
+# 3    15.99
+# 6    10.58
+# 7    18.66
+# 8    16.01
+# 9    17.08
+# dtype: float64
+
+import pytz
+s_tzs = pd.Series(pytz.all_timezones)
+print(s_tzs[(s_tzs.str.contains("Asia") & s_tzs.str.endswith(pat = ("e", "u"))) | s_tzs.str.contains("Tokyo")])
+# 240        Asia/Aqtau
+# 241       Asia/Aqtobe
+# 244       Asia/Atyrau
+# 247         Asia/Baku
+# 264     Asia/Dushanbe
+# 281    Asia/Kathmandu
+# 282     Asia/Katmandu
+# 290        Asia/Macau
+# 313    Asia/Singapore
+# 320       Asia/Thimbu
+# 321      Asia/Thimphu
+# 322        Asia/Tokyo
+# 329    Asia/Vientiane
+# dtype: object
+'''
+Though "Tokyo" does not end with "e" or "u" (first condition),
+but it satisfies the second condition (s_tzs.str.contains("Tokyo")),
+=> Still returned in the final result.
+'''
