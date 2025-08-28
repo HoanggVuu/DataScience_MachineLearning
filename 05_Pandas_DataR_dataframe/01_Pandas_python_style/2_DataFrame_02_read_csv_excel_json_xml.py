@@ -584,3 +584,9 @@ print(df_cd)
 df_food = pd.read_xml("05_Pandas_DataR_dataframe/01_Pandas_python_style/data/food.xml")
 
 print(df_food)
+#                           name  price                                        description  calories
+# 0              Belgian Waffles  $5.95  Two of our famous Belgian Waffles with plenty ...       650
+# 1   Strawberry Belgian Waffles  $7.95  Light Belgian waffles covered with strawberrie...       900
+# 2  Berry-Berry Belgian Waffles  $8.95  Light Belgian waffles covered with an assortme...       900
+# 3                 French Toast  $4.50  Thick slices made from our homemade sourdough ...       600
+# 4          Homestyle Breakfast  $6.95  Two eggs, bacon or sausage, toast, and our eve...       950
