@@ -1,8 +1,21 @@
 '''
 Pandas offers many functions to read data from various file formats into DataFrames.
 
+##################################################################
+
 Flow of contents:
+
 1. pd.read_csv() - Read CSV files
+   + Basic Usage: df = pd.read_csv('path/to/file.csv')
+   + Specify index_col=: df = pd.read_csv('path/to/file.csv', index_col='column_name'/column_index)
+   + Specify usecols=: df = pd.read_csv('path/to/file.csv', usecols=['col1', 'col2']/col_index_list)
+   + Specify dtype=: df = pd.read_csv('path/to/file.csv', dtype={'col1': 'str', 'col2': 'float64'})
+   + With header= and names=: df = pd.read_csv('path/to/file.csv', header=0, names=['col1', 'col2'])
+   + Read TSV file with sep='\t': df = pd.read_csv('path/to/file.tsv', sep='\t')
+   + Handle NA values: df = pd.read_csv('path/to/file.csv', na_values=['?'])
+   + Read with skiprows= and nrows=: df = pd.read_csv('path/to/file.csv', skiprows=2, nrows=5)
+   + Read with skipfooter=: df = pd.read_csv('path/to/file.csv', skipfooter=2, engine='python')
+
 2. pd.read_excel() - Read Excel files
 3. pd.read_json() - Read JSON files
 4. pd.read_xml() - Read XML files
@@ -105,6 +118,24 @@ print(df)
 # 6     Simon  632.80  Operations
 # 7      Guru  722.50     Finance
 
+#-------
+
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp.csv', 
+    usecols = [1, 2, 4]
+)
+
+print(df)
+#        name  salary        dept
+# 0      Rick  623.30          IT
+# 1       Dan  515.20  Operations
+# 2  Michelle  611.00          IT
+# 3      Ryan  729.00          HR
+# 4      Gary  843.25     Finance
+# 5      Nina  578.00          IT
+# 6     Simon  632.80  Operations
+# 7      Guru  722.50     Finance
+
 ####################
 ## Specify dtype= ##
 ####################
@@ -135,3 +166,193 @@ print(df.dtypes)
 # salary     float64
 # dept      category
 # dtype: object
+
+#############################
+## With header= and names= ##
+#############################
+'''
+This is useful when the CSV file lacks a header row.
+Or when you want to override the existing header.
+
+If the original CSV does not have a header row, set "header=None".
+'''
+
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp.csv', 
+    header = 0, # The first row (0-indexed) is the header
+    names = ["ID", "NAME", "SALARY", "START_DATE", "DEPT"] # Custom column names
+)
+
+print(df)
+#    ID      NAME  SALARY  START_DATE        DEPT
+# 0   1      Rick  623.30  2012-01-01          IT
+# 1   2       Dan  515.20  2013-09-23  Operations
+# 2   3  Michelle  611.00  2014-11-15          IT
+# 3   4      Ryan  729.00  2014-05-11          HR
+# 4   5      Gary  843.25  2015-03-27     Finance
+# 5   6      Nina  578.00  2013-05-21          IT
+# 6   7     Simon  632.80  2013-07-30  Operations
+# 7   8      Guru  722.50  2014-06-17     Finance
+
+#################################
+## Read TSV file with sep='\t' ##
+#################################
+
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp.tsv', 
+    sep = '\t' # Tab-separated values
+)
+
+print(df)
+#   Unnamed: 0      name  salary  start_date        dept
+# 0          1      Rick  623.30  2012-01-01          IT
+# 1          2       Dan  515.20  2013-09-23  Operations
+# 2          3  Michelle  611.00  2014-11-15          IT
+# 3          4      Ryan  729.00  2014-05-11          HR
+# 4          ?      Gary  843.25  2015-03-27     Finance
+# 5          6      Nina  578.00  2013-05-21          IT
+# 6          7     Simon  632.80  2013-07-30  Operations
+# 7          8      Guru  722.50  2014-06-17     Finance
+
+#-------
+
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp.tsv', 
+    sep = '\t', # Tab-separated values
+    index_col = 0 # Set the first column as index
+)
+
+print(df)
+#        name  salary  start_date        dept
+# 1      Rick  623.30  2012-01-01          IT
+# 2       Dan  515.20  2013-09-23  Operations
+# 3  Michelle  611.00  2014-11-15          IT
+# 4      Ryan  729.00  2014-05-11          HR
+# ?      Gary  843.25  2015-03-27     Finance
+# 6      Nina  578.00  2013-05-21          IT
+# 7     Simon  632.80  2013-07-30  Operations
+# 8      Guru  722.50  2014-06-17     Finance
+
+#######################
+## Handle NA values  ##
+#######################
+'''
+By default the following values are interpreted as NaN: 
+
+“ “, “#N/A”, “#N/A N/A”, “#NA”, “-1.#IND”, “-1.#QNAN”, 
+“-NaN”, “-nan”, “1.#IND”, “1.#QNAN”, “<NA>”, “N/A”, 
+“NA”, “NULL”, “NaN”, “None”, “n/a”, “nan”, “null “.
+'''
+
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp.tsv', 
+    sep = '\t', # Tab-separated values
+    na_values = ['?'], # Additional strings to recognize as NA/NaN
+    index_col = 0 # Set the first column as index
+)
+
+print(df)
+#          name  salary  start_date        dept
+# 1.0      Rick  623.30  2012-01-01          IT
+# 2.0       Dan  515.20  2013-09-23  Operations
+# 3.0  Michelle  611.00  2014-11-15          IT
+# 4.0      Ryan  729.00  2014-05-11          HR
+# NaN      Gary  843.25  2015-03-27     Finance
+# 6.0      Nina  578.00  2013-05-21          IT
+# 7.0     Simon  632.80  2013-07-30  Operations
+# 8.0      Guru  722.50  2014-06-17     Finance
+'''The '?' in the index column is now treated as NaN.'''
+
+####################################
+## Read with skiprows= and nrows= ##
+####################################
+
+# No skip the rows
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp_skiprows.tsv',
+    sep = '\t', # Tab-separated values
+)
+'''pandas.errors.ParserError: Error tokenizing data. C error: Expected 1 fields in line 3, saw 5'''
+
+#-------
+
+# Skip the first 2 corrupted rows
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp_skiprows.tsv',
+    sep = '\t', # Tab-separated values
+    skiprows = 2 # Skip the first 2 rows
+)
+
+print(df)
+#   Unnamed: 0      name  salary  start_date        dept
+# 0          1      Rick  623.30  2012-01-01          IT
+# 1          2       Dan  515.20  2013-09-23  Operations
+# 2          3  Michelle  611.00  2014-11-15          IT
+# 3          4      Ryan  729.00  2014-05-11          HR
+# 4                 Gary  843.25  2015-03-27     Finance
+# 5          6      Nina  578.00  2013-05-21          IT
+# 6          7     Simon  632.80  2013-07-30  Operations
+# 7          8      Guru  722.50  2014-06-17     Finance
+
+#-------
+
+# skiprows= and nrows=
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp_skiprows.tsv',
+    sep = '\t', # Tab-separated values
+    skiprows = 2, # Skip the first 2 rows
+    nrows = 4, # Read only 4 rows
+    index_col = 0 # Set the first column as index
+)
+
+print(df)
+#        name  salary  start_date        dept
+# 1      Rick   623.3  2012-01-01          IT
+# 2       Dan   515.2  2013-09-23  Operations
+# 3  Michelle   611.0  2014-11-15          IT
+# 4      Ryan   729.0  2014-05-11          HR
+
+###########################
+## Read with skipfooter= ##
+###########################
+
+# No skip the footer
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp_skipfooter.csv'
+)
+
+print(df)
+#                    id      name  salary  start_date        dept
+# 0                   1      Rick  623.30  2012-01-01          IT
+# 1                   2       Dan  515.20  2013-09-23  Operations
+# 2                   3  Michelle  611.00  2014-11-15          IT
+# 3                   4      Ryan  729.00  2014-05-11          HR
+# 4                          Gary  843.25  2015-03-27     Finance
+# 5                   6      Nina  578.00  2013-05-21          IT
+# 6                   7     Simon  632.80  2013-07-30  Operations
+# 7                   8      Guru  722.50  2014-06-17     Finance
+# 8  # Footer to skip 1       NaN     NaN         NaN         NaN
+# 9  # Footer to skip 2       NaN     NaN         NaN         NaN
+
+#-------
+
+# Skip the last 2 footer rows
+df = pd.read_csv(
+    filepath_or_buffer = '05_Pandas_DataR_dataframe/01_Pandas_python_style/data/emp_skipfooter.csv',
+    skipfooter = 2, # Skip the last 2 rows
+    engine = 'python', # 'python' engine is required when using skipfooter
+    na_values = [" "],
+    index_col = 0 # Set the first column as index
+)
+
+print(df)
+#          name  salary  start_date        dept
+# id                                           
+# 1.0      Rick  623.30  2012-01-01          IT
+# 2.0       Dan  515.20  2013-09-23  Operations
+# 3.0  Michelle  611.00  2014-11-15          IT
+# 4.0      Ryan  729.00  2014-05-11          HR
+# NaN      Gary  843.25  2015-03-27     Finance
+# 6.0      Nina  578.00  2013-05-21          IT
+# 7.0     Simon  632.80  2013-07-30  Operations
+# 8.0      Guru  722.50  2014-06-17     Finance
