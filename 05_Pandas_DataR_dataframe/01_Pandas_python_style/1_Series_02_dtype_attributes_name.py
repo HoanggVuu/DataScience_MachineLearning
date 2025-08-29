@@ -1,14 +1,14 @@
 '''
 Flow of contents:
-3. Dtype: Data type of the Series
-4. Some important Series attributes: .index, .values, .shape, .size, .ndim, .is_unique, .hasnans, .empty.
-5. 'name' attribute: setting and getting the name of the Series.
+1. Series.dtype: Data type of the Series
+2. Some important Series attributes: .index, .values, .shape, .size, .ndim, .is_unique, .hasnans, .empty.
+3. 'name' attribute: setting and getting the name of the Series.
 '''
 
 import pandas as pd
 
 #--------------------------------------------------------------------------------------------------------------#
-#---------------------------------------- 3. Dtype --- IGNORE --- ---------------------------------------------#
+#--------------------------------------------- 1. Series.dtype  -----------------------------------------------#
 #--------------------------------------------------------------------------------------------------------------#
 
 # Dtype is the data type of the Series, which can be checked using the .dtype attribute.
@@ -37,7 +37,7 @@ print(s_mixed_nan.dtype)  # Output: float64
 
 
 #--------------------------------------------------------------------------------------------------------------#
-#---------------------------------------- 4. Some important Series attributes ---------------------------------#
+#---------------------------------------- 2. Some important Series attributes ---------------------------------#
 #--------------------------------------------------------------------------------------------------------------#
 
 ############
@@ -135,7 +135,7 @@ print(s_not_empty.empty)  # False
 
 
 #----------------------------------------------------------------------------------------------------------------#
-#---------------------------------------- 5. 'name' attribute ---------------------------------------------------#
+#---------------------------------------- 3. 'name' attribute ---------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------#
 
 # The 'name' attribute allows you to set or get the name of the Series.
