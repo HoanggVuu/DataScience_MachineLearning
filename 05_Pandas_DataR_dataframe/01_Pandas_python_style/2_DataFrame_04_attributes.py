@@ -25,36 +25,41 @@ Flow of contents:
 
 import pandas as pd
 
-df_medals = pd.read_csv(
-    filepath_or_buffer = "05_Pandas_DataR_dataframe/data/medals.csv",
-    skiprows = 4
+df_baseball = pd.read_csv(
+    filepath_or_buffer = "05_Pandas_DataR_dataframe/data/baseball.csv",
+    dtype = {"Team": "category", "Position": "category", "PosCategory": "category"}
 )
 
+df_baseball.head()
+#               Name Team       Position  Height  Weight    Age PosCategory
+# 0    Adam_Donachie  BAL        Catcher      74     180  22.99     Catcher
+# 1        Paul_Bako  BAL        Catcher      74     215  34.69     Catcher
+# 2  Ramon_Hernandez  BAL        Catcher      72     210  30.78     Catcher
+# 3     Kevin_Millar  BAL  First_Baseman      72     210  35.43   Infielder
+# 4      Chris_Gomez  BAL  First_Baseman      73     188  35.71   Infielder
 
-df_medals.head()
-#    Year      City       Sport      Discipline  NOC       Event Event gender   Medal
-# 0  1924  Chamonix     Skating  Figure skating  AUT  individual            M  Silver
-# 1  1924  Chamonix     Skating  Figure skating  AUT  individual            W    Gold
-# 2  1924  Chamonix     Skating  Figure skating  AUT       pairs            X    Gold
-# 3  1924  Chamonix   Bobsleigh       Bobsleigh  BEL    four-man            M  Bronze
-# 4  1924  Chamonix  Ice Hockey      Ice Hockey  CAN  ice hockey            M    Gold
-
-
-df_medals.info()
+df_baseball.info()
 # <class 'pandas.core.frame.DataFrame'>
-# RangeIndex: 2311 entries, 0 to 2310
-# Data columns (total 8 columns):
-#  #   Column        Non-Null Count  Dtype 
-# ---  ------        --------------  ----- 
-#  0   Year          2311 non-null   int64 
-#  1   City          2311 non-null   object
-#  2   Sport         2311 non-null   object
-#  3   Discipline    2311 non-null   object
-#  4   NOC           2311 non-null   object
-#  5   Event         2311 non-null   object
-#  6   Event gender  2311 non-null   object
-#  7   Medal         2311 non-null   object
-# dtypes: int64(1), object(7)
-# memory usage: 144.6+ KB
+# RangeIndex: 1015 entries, 0 to 1014
+# Data columns (total 7 columns):
+#  #   Column       Non-Null Count  Dtype   
+# ---  ------       --------------  -----   
+#  0   Name         1015 non-null   object  
+#  1   Team         1015 non-null   category
+#  2   Position     1015 non-null   category
+#  3   Height       1015 non-null   int64   
+#  4   Weight       1015 non-null   int64   
+#  5   Age          1015 non-null   float64 
+#  6   PosCategory  1015 non-null   category
+# dtypes: category(3), float64(1), int64(2), object(1)
+# memory usage: 36.5+ KB
 
-#------------------------------------------------------------------------------------------------------
+'''
+Here, if leave the "Team", "Position", "PosCategory" columns as "object" type, 
+the memory usage will be 55.6+ KB.
+'''
+
+
+#------------------------------------------------------------------------------------------------------#
+#------------------------------------ 1. Shape and Size attributes ------------------------------------#
+#------------------------------------------------------------------------------------------------------#
