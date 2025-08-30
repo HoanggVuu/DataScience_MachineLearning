@@ -434,3 +434,40 @@ print(customers.merge(orders, on='customer_id', how='inner', suffixes=('_cst', '
 #------------------------------------------------------------------------------------------------------#
 #----------------------------------------- 3. Combining -----------------------------------------------#
 #------------------------------------------------------------------------------------------------------#
+
+df1 = pd.DataFrame({'A': [0, 0], 'B': [4, 4]})
+print(df1)
+#    A  B
+# 0  0  4
+# 1  0  4
+
+df2 = pd.DataFrame({'A': [1, 1], 'B': [3, 3]})
+print(df2)
+#    A  B
+# 0  1  3
+# 1  1  3
+
+#######################
+##    df.combine()   ##
+#######################
+''' Combines a DataFrame with other DataFrame using func to element-wise combine columns '''
+
+# Combine df1 and df2 by taking the maximum value for each element
+df_combined = df1.combine(
+    other = df2,
+    func = np.maximum # Function to apply element-wise
+)
+print(df_combined)
+#    A  B
+# 0  1  4
+# 1  1  4
+
+# Combine df1 and df2 by taking the mean value for each element
+df_combined = df1.combine(
+    other = df2,
+    func = lambda s1, s2: (s1 + s2) / 2 # Custom function to compute mean
+)
+print(df_combined)
+#      A    B
+# 0  0.5  3.5
+# 1  0.5  3.5
