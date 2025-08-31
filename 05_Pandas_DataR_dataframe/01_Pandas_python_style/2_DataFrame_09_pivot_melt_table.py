@@ -31,8 +31,8 @@ regions   = ['North', 'South', 'East', 'West']
 products  = ['Widget', 'Gadget', 'Doohickey']
 
 np.random.seed(42)
-sales_df = pd.DataFrame(
-    {
+df_sales = pd.DataFrame(
+    {   'ID'        : range(1, 201),
         'date'      : np.random.choice(dates, size=200),
         'region'    : np.random.choice(regions, size=200),
         'product'   : np.random.choice(products, size=200),
@@ -41,13 +41,119 @@ sales_df = pd.DataFrame(
     }
 ).assign(sales = lambda df: df.eval("quantity * unit_price")) # Add a column with the total sales amount
 
-sales_df.head()
-#         date region    product  quantity  unit_price   sales
-# 0 2024-01-07   East     Gadget         5        6.19   30.95
-# 1 2024-01-20  North     Widget        10       21.94  219.40
-# 2 2024-01-29   East  Doohickey         5       41.47  207.35
-# 3 2024-01-15   East     Widget         4       49.43  197.72
-# 4 2024-01-11  North     Widget         2       11.77   23.54
+df_sales.head()
+#    ID       date region    product  quantity  unit_price   sales
+# 0   1 2024-01-07   East     Gadget         5        6.19   30.95
+# 1   2 2024-01-20  North     Widget        10       21.94  219.40
+# 2   3 2024-01-29   East  Doohickey         5       41.47  207.35
+# 3   4 2024-01-15   East     Widget         4       49.43  197.72
+# 4   5 2024-01-11  North     Widget         2       11.77   23.54
+
+####################################
+##    pd.pivot() || df.pivot()    ##
+####################################
+'''
+The .pivot() converts unique values from one column into multiple columns in the DataFrame.
+=> Results in a wider DataFrame than the original.
+
+NOTE: if the dupicate values exist => RAISE ERROR
+'''
+
+#--------
+## Basic usage
+#--------
+
+df_pivoted = pd.pivot(
+    data = df_sales,
+    index = "ID", # The column to be kept intact, becomes the new index
+    columns = "region", # The column whose unique values will become new columns
+    values = "sales" # The column whose values will fill the new DataFrame
+)
+
+print(df_pivoted.head())
+# region    East   North  South  West
+# ID                                 
+# 1        30.95     NaN    NaN   NaN
+# 2          NaN  219.40    NaN   NaN
+# 3       207.35     NaN    NaN   NaN
+# 4       197.72     NaN    NaN   NaN
+# 5          NaN   23.54    NaN   NaN
+
+#--------
+## Using multiple variables for columns=
+#--------
+
+df_pivoted_multi = pd.pivot(
+    data = df_sales,
+    index = "ID",
+    columns = ["region", "product"], # Multiple columns for new columns
+    values = "sales"
+)
+
+print(df_pivoted_multi.head())
+# region    East   North      East           West  North  South   West     North      West  South          
+# product Gadget  Widget Doohickey  Widget Gadget Gadget Widget Widget Doohickey Doohickey Gadget Doohickey
+# ID                                                                                                       
+# 1        30.95     NaN       NaN     NaN    NaN    NaN    NaN    NaN       NaN       NaN    NaN       NaN
+# 2          NaN  219.40       NaN     NaN    NaN    NaN    NaN    NaN       NaN       NaN    NaN       NaN
+# 3          NaN     NaN    207.35     NaN    NaN    NaN    NaN    NaN       NaN       NaN    NaN       NaN
+# 4          NaN     NaN       NaN  197.72    NaN    NaN    NaN    NaN       NaN       NaN    NaN       NaN
+# 5          NaN   23.54       NaN     NaN    NaN    NaN    NaN    NaN       NaN       NaN    NaN       NaN
+
+#--------
+## Using multiple variables for values=
+#--------
+
+df_pivoted_multi = pd.pivot(
+    data = df_sales,
+    index = "ID",
+    columns = "region",
+    values = ["sales", "date"] # Multiple columns for values
+)
+
+print(df_pivoted_multi.head())
+#          sales                         date                      
+# region    East  North South West       East      North South West
+# ID                                                               
+# 1        30.95    NaN   NaN  NaN 2024-01-07        NaT   NaT  NaT
+# 2          NaN  219.4   NaN  NaN        NaT 2024-01-20   NaT  NaT
+# 3       207.35    NaN   NaN  NaN 2024-01-29        NaT   NaT  NaT
+# 4       197.72    NaN   NaN  NaN 2024-01-15        NaT   NaT  NaT
+# 5          NaN  23.54   NaN  NaN        NaT 2024-01-11   NaT  NaT
+
+#---------
+## Join column names after pivoting
+#---------
+
+df_pivoted_multi = pd.pivot(
+    data = df_sales,
+    index = "ID",
+    columns = "region",
+    values = ["sales", "date"] # Multiple columns for values
+)
+
+print(df_pivoted_multi.columns)
+# MultiIndex([(   'ID',      ''),
+#             ('sales',  'East'),
+#             ('sales', 'North'),
+#             ('sales', 'South'),
+#             ('sales',  'West'),
+#             ( 'date',  'East'),
+#             ( 'date', 'North'),
+#             ( 'date', 'South'),
+#             ( 'date',  'West')],
+#            names=[None, 'region'])
+
+df_pivoted_multi.columns = ['_'.join(col).strip() for col in df_pivoted_multi.columns.values]
+print(df_pivoted_multi.head())
+#    sales_East sales_North sales_South sales_West  date_East date_North date_South date_West
+# ID                                                                                         
+# 1       30.95         NaN         NaN        NaN 2024-01-07        NaT        NaT       NaT
+# 2         NaN       219.4         NaN        NaN        NaT 2024-01-20        NaT       NaT
+# 3      207.35         NaN         NaN        NaN 2024-01-29        NaT        NaT       NaT
+# 4      197.72         NaN         NaN        NaN 2024-01-15        NaT        NaT       NaT
+# 5         NaN       23.54         NaN        NaN        NaT 2024-01-11        NaT       NaT
+
 
 #---------------------------------------------------------------------------------------------------------#
 #------------------------------------------ 2. Melt: wide to long ----------------------------------------#
@@ -61,7 +167,7 @@ n_patients = 8
 patient_ids = [f"P{i:03d}" for i in range(1, n_patients+1)]
 
 np.random.seed(42)
-measurements_df = pd.DataFrame({
+df_measurements = pd.DataFrame({
     'patient_id' : patient_ids,
     'age'        : np.random.randint(20, 80, size=n_patients),
     # Day‑specific columns (wide format)
@@ -73,7 +179,7 @@ measurements_df = pd.DataFrame({
     'HR_day3'    : np.random.randint(60, 100, size=n_patients)
 })
 
-print(measurements_df)
+print(df_measurements)
 #   patient_id  age  BP_day1  HR_day1  BP_day2  HR_day2  BP_day3  HR_day3
 # 0       P001   58      128       62      142       62      134       67
 # 1       P002   71      132       81      121       96      123       94
@@ -96,7 +202,7 @@ print(measurements_df)
 n_resp = 250
 
 np.random.seed(42)
-survey_df = pd.DataFrame({
+df_survey = pd.DataFrame({
     'respondent_id'   : range(1, n_resp+1),
     
     'gender'          : np.random.choice(['Male', 'Female', 'Other'], size=n_resp,
@@ -110,7 +216,7 @@ survey_df = pd.DataFrame({
                                          p=[0.15, 0.25, 0.30, 0.20, 0.10])
 })
 
-survey_df.head()
+df_survey.head()
 #    respondent_id  gender favorite_color purchase_intent
 # 0              1    Male         Purple        Probably
 # 1              2  Female         Purple        Unlikely
