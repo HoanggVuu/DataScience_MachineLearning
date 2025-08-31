@@ -22,9 +22,15 @@ import numpy as np
 #----------------------------------------- 1. Pivot: long to wide ----------------------------------------#
 #---------------------------------------------------------------------------------------------------------#
 
-##############################
-## Create example DataFrame ##
-##############################
+####################################
+##    pd.pivot() || df.pivot()    ##
+####################################
+'''
+The .pivot() converts unique values from one column into multiple columns in the DataFrame.
+=> Results in a wider DataFrame than the original.
+
+NOTE: if the chosen "index" column has duplicates => RAISE ERROR
+'''
 
 dates = pd.date_range('2024-01-01', periods=30) # 30 days
 regions   = ['North', 'South', 'East', 'West']
@@ -48,16 +54,6 @@ df_sales.head()
 # 2   3 2024-01-29   East  Doohickey         5       41.47  207.35
 # 3   4 2024-01-15   East     Widget         4       49.43  197.72
 # 4   5 2024-01-11  North     Widget         2       11.77   23.54
-
-####################################
-##    pd.pivot() || df.pivot()    ##
-####################################
-'''
-The .pivot() converts unique values from one column into multiple columns in the DataFrame.
-=> Results in a wider DataFrame than the original.
-
-NOTE: if the dupicate values exist => RAISE ERROR
-'''
 
 #--------
 ## Basic usage
@@ -133,8 +129,7 @@ df_pivoted_multi = pd.pivot(
 )
 
 print(df_pivoted_multi.columns)
-# MultiIndex([(   'ID',      ''),
-#             ('sales',  'East'),
+# MultiIndex([('sales',  'East'),
 #             ('sales', 'North'),
 #             ('sales', 'South'),
 #             ('sales',  'West'),
@@ -154,6 +149,150 @@ print(df_pivoted_multi.head())
 # 4      197.72         NaN         NaN        NaN 2024-01-15        NaT        NaT       NaT
 # 5         NaN       23.54         NaN        NaN        NaT 2024-01-11        NaT       NaT
 
+#--------
+## Using df.pivot()
+#--------
+
+df_pivoted = df_sales.pivot(
+    index = "ID",
+    columns = "region",
+    values = "sales"
+)
+
+print(df_pivoted.head())
+# region    East   North  South  West
+# ID                                 
+# 1        30.95     NaN    NaN   NaN
+# 2          NaN  219.40    NaN   NaN
+# 3       207.35     NaN    NaN   NaN
+# 4       197.72     NaN    NaN   NaN
+# 5          NaN   23.54    NaN   NaN
+
+###########################################
+## pd.pivot_table() || df.pivot_table()  ##
+###########################################
+'''
+The .pivot_table() is a more flexible version of .pivot(), 
+=> allowing you to aggregate data when there are duplicate values.
+'''
+
+df_duplicates = pd.DataFrame(
+    {
+        "ID": ["one", "one", "one", "two", "two", "one", "one", "two", "two"],
+        "class": ["foo", "foo", "foo", "foo", "foo", "bar", "bar", "bar", "bar"],
+        "size": ["small", "large", "large", "small", "small", "large", "small", "small", "large"],
+        "scores": [1, 2, 2, 3, 3, 4, 5, 6, 7],
+        "measurements": [2, 4, 5, 5, 6, 6, 8, 9, 9]
+    }
+)
+
+print(df_duplicates)
+#     ID class   size  scores  measurements
+# 0  one   foo  small       1             2
+# 1  one   foo  large       2             4
+# 2  one   foo  large       2             5
+# 3  two   foo  small       3             5
+# 4  two   foo  small       3             6
+# 5  one   bar  large       4             6
+# 6  one   bar  small       5             8
+# 7  two   bar  small       6             9
+# 8  two   bar  large       7             9
+
+df_duplicates.pivot(index = "ID", columns = "class", values = "scores")
+'''ValueError: Index contains duplicate entries, cannot reshap'''
+
+#-------------
+## Use pd.pivot_table() to handle duplicates
+#-------------
+
+df_pivoted_tbl = pd.pivot_table(
+    data = df_duplicates,
+    index = "ID",
+    columns = "class",
+    values = "scores",
+    aggfunc = "mean", # aggfunc to handle duplicates (default is 'mean')
+)
+
+print(df_pivoted_tbl)
+# class  bar       foo
+# ID                  
+# one    4.5  1.666667
+# two    6.5  3.000000
+
+#-------------
+## Use multiple aggfunc
+#-------------
+
+df_pivoted_tbl = pd.pivot_table(
+    data = df_duplicates,
+    index = "ID",
+    columns = "size",
+    values = "measurements",
+    aggfunc = ["mean", "sum"] # Multiple aggfunc
+)
+
+print(df_pivoted_tbl)
+#       mean             sum      
+# size large     small large small
+# ID                              
+# one    5.0  5.000000    15    10
+# two    9.0  6.666667     9    20
+
+#-------------
+## Use multiple values
+#-------------
+
+df_pivoted_tbl = pd.pivot_table(
+    data = df_duplicates,
+    index = "ID",
+    columns = "size",
+    values = ["scores", "measurements"], # Multiple values
+    aggfunc = "mean"
+)
+
+print(df_pivoted_tbl)
+#      measurements              scores      
+# size        large     small     large small
+# ID                                         
+# one           5.0  5.000000  2.666667   3.0
+# two           9.0  6.666667  7.000000   4.0
+
+#-------------
+## Use multiple grouping columns
+#-------------
+
+df_pivoted_tbl = pd.pivot_table(
+    data = df_duplicates,
+    index = "ID", # Multiple grouping columns
+    columns = ["size", "class"],
+    values = "scores",
+    aggfunc = np.std, # Standard deviation as aggfunc
+    dropna = False # Keep NaN columns
+)
+
+print(df_pivoted_tbl)
+# size  large      small     
+# class   bar  foo   bar  foo
+# ID                         
+# one     NaN  0.0   NaN  NaN
+# two     NaN  NaN   NaN  0.0
+
+#-------------
+## Use df.pivot_table()
+#-------------
+
+df_pivoted_tbl = df_duplicates.pivot_table(
+    index = "ID",
+    columns = "class",
+    values = "scores",
+    aggfunc = "mean"
+)
+
+print(df_pivoted_tbl)
+# class  bar       foo
+# ID                  
+# one    4.5  1.666667
+# two    6.5  3.000000
 
 #---------------------------------------------------------------------------------------------------------#
 #------------------------------------------ 2. Melt: wide to long ----------------------------------------#
@@ -189,6 +328,7 @@ print(df_measurements)
 # 5       P006   27      145       97      137       98      129       99
 # 6       P007   40      149       61      125       77      137       63
 # 7       P008   58      133       80      124       63      116       61
+
 
 
 #---------------------------------------------------------------------------------------------------------#
