@@ -442,7 +442,7 @@ print(df_pokemon.query('HP > 200'))
 # 113  Chansey  Normal    NaN    450  250       5        5      35     105     50          1      False
 # 242  Blissey  Normal    NaN    540  255      10       10      75     135     55          2      False
 
-print(df_pokemon.query('(Sp_Atk > Attack * 2) & (Type_1 == "Psychic")'))
+print(df_pokemon.query('(Sp_Atk > Attack*2) & (Type_1 == "Psychic")'))
 #                       Name   Type_1 Type_2  Total  HP  Attack  Defense  Sp_Atk  Sp_Def  Speed Generation  Legendary
 # #                                                                                                                  
 # 63                    Abra  Psychic    NaN    310  25      20       15     105      55     90          1      False
