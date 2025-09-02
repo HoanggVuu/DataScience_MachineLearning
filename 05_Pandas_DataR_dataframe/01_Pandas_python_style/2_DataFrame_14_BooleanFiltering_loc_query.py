@@ -36,7 +36,8 @@ df_pokemon = (
             "Legendary": "bool"
         }
     )
-    .rename(columns = lambda col: re.sub(r"\s+", "_", col.strip().replace(".", "")))
+    #.rename(columns = lambda col: re.sub(r"\s+", "_", col.strip().replace(".", "")))
+    .pipe(lambda df: df.set_axis(df.columns.str.strip().str.replace(r"\s+", "_", regex = True).str.replace(".", ""), axis=1))
     .assign(Generation = lambda df: df['Generation'].cat.as_ordered())
 )
 
