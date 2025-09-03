@@ -2,6 +2,7 @@
 1. Changing Column Names:
    + df = df.set_axis(new_names_list, axis=1, copy=True/False)
    + df = df.set_axis(df.columns.str.strip().str.replace(r"\s+", "_", regex=True), axis=1, copy=True/False) # using str methods
+   + df = df.pipe(lambda df: df.set_axis(df.columns.str.strip().str.replace(r"\s+", "_", regex=True), axis=1, copy=True/False)) # using str methods in pipe
    + df.columns = new_names_list
    + df.columns = df.columns.str.replace(old_pat, new_pat)
    + df.columns = df.columns.map(string_methods)
@@ -115,6 +116,20 @@ print(df_new_cols.head(3))
 df_new_cols = df_lifexp.set_axis(df_lifexp.columns.str.strip().str.replace(r"\s+", "_", regex=True), axis=1, copy=True)
 
 print(df_new_cols.head(3))
+#        Country  Year      Status  ...  thinness_5-9_years  Income_composition_of_resources  Schooling
+# 0  Afghanistan  2015  Developing  ...                17.3                            0.479       10.1
+# 1  Afghanistan  2014  Developing  ...                17.5                            0.476       10.0
+# 2  Afghanistan  2013  Developing  ...                17.7                            0.470        9.9
+
+###################################################################################
+## df = df.pipe(lambda df: set_axis(df.columns.str.method(), axis=1, copy=True)) ##
+###################################################################################
+
+df_new_cols_pipe = df_lifexp.pipe(
+    lambda df: df.set_axis(df.columns.str.strip().str.replace(r"\s+", "_", regex=True), axis=1, copy=True)
+)
+
+print(df_new_cols_pipe.head(3))
 #        Country  Year      Status  ...  thinness_5-9_years  Income_composition_of_resources  Schooling
 # 0  Afghanistan  2015  Developing  ...                17.3                            0.479       10.1
 # 1  Afghanistan  2014  Developing  ...                17.5                            0.476       10.0
