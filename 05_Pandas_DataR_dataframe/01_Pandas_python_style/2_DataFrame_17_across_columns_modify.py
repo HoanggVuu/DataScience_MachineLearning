@@ -59,7 +59,7 @@ print(df_boston_scaled.head())
 #----------------------------------------------------------------------------------------------------------------#
 #--------------------------- 2. df.pipe(), df.assign() and df.select_dtypes().columns ---------------------------#
 #----------------------------------------------------------------------------------------------------------------#
-'''Using df.assign() and df.select_dtypes().columns to modify specific type of columns'''
+'''Using df.pipe(), df.assign() and df.select_dtypes().columns to modify specific type of columns'''
 
 df_baseball = df_baseball = pd.read_csv(
     filepath_or_buffer = "05_Pandas_DataR_dataframe/data/baseball.csv",
