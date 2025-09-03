@@ -21,6 +21,7 @@ that allows you to filter data based on specific conditions.
 
 5. Using .query() for short-syntax condition
    + df.query("condition_expression")
+   + df.query("colname.str.method()") => string methods (same for .dt and .cat methods)
    + df.query("~condition_expression") => negation of condition
    + df.query()[["col_1", "col_2", ...]]
    + Using `column name` if the column name has special characters
@@ -462,6 +463,20 @@ print(df_pokemon.query('(Speed < 15) | (Speed > 150)'))
 # 446           Munchlax   Normal     NaN    390  135      85       40      40      85      5          4      False
 # 597          Ferroseed    Grass   Steel    305   44      50       91      24      86     10          5      False
 
+######################################
+## df.query("colname.str.method()") ##
+######################################
+'''Same for .dt.method() and .cat.method()'''
+
+print(df_pokemon.query('Name.str.contains("Mega")'))
+#                           Name    Type_1    Type_2  Total   HP  Attack  Defense  Sp_Atk  Sp_Def  Speed Generation  Legendary
+# #                                                                                                                           
+# 3        VenusaurMega Venusaur     Grass    Poison    625   80     100      123     122     120     80          1      False
+# 6    CharizardMega Charizard X      Fire    Dragon    634   78     130      111     130      85    100          1      False
+# 6    CharizardMega Charizard Y      Fire    Flying    634   78     104       78     159     115    100          1      False
+# 9      BlastoiseMega Blastoise     Water       NaN    630   79     103      120     135     115     78          1      False
+# 15       BeedrillMega Beedrill       Bug    Poison    495   65     150       40      15      80    145          1      False
+
 #######################################
 ## df.query("~condition_expression") ##
 #######################################
@@ -524,3 +539,4 @@ print(df_pokemon.query('Attack >= @atk_threshold')[['Name', 'Attack', "Legendary
 # 383    GroudonPrimal Groudon     180       True
 # 384    RayquazaMega Rayquaza     180       True
 # 386       DeoxysAttack Forme     180       True
+
