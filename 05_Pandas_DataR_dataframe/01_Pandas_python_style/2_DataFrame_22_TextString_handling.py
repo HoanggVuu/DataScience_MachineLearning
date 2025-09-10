@@ -196,3 +196,16 @@ print(df_subjects_score.head())
 # 018000003     ĐỖ XUÂN AN    Male  4.50        5.50       3.75      NaN     2.25      NaN      NaN        NaN
 # 018000004   ĐẶNG PHÚC AN  Female  3.00        6.00       5.50      NaN     1.50      NaN      NaN        NaN
 # 018000005    ĐẶNG VĂN AN    Male  2.25        4.75       5.25      NaN     2.00      NaN      NaN        NaN
+
+print(df_subjects_score.notna().sum()) # Count non-null values in each column
+# FULL_NAME     34826
+# GENDER        34826
+# Math          34500
+# Literature    33894
+# Geography     22171
+# History        3235
+# English       30200
+# Biology        3573
+# Physics       10157
+# Chemistry      8098
+# dtype: int64
