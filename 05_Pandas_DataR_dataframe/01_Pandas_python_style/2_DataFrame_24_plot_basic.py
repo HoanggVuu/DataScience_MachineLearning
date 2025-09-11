@@ -32,18 +32,18 @@ Draw basic plots using DataFrame.plot() method or DataFrame.plot.<plotting_metho
    + df.plot(kind = "scatter", x = <x_column>, y = <y_column>), 
    + df.plot.scatter(x = <x_column>, y = <y_column>)
 
-8. Line plot: 
+8. Hexbin plot: 
+    + df.plot(kind = "hexbin", x = <x_column>, y = <y_column>, gridsize = <size>)
+    + df.plot.hexbin(x = <x_column>, y = <y_column>, gridsize = <size>)
+
+9. Line plot: 
    + df.plot(kinde = "line")
    + df.plot()
    + df.plot.line()
 
-9. Area plot: 
+10. Area plot: 
    + df.plot(kind = "area")
    + df.plot.area()
-
-10. Hexbin plot: 
-    + df.plot(kind = "hexbin", x = <x_column>, y = <y_column>, gridsize = <size>)
-    + df.plot.hexbin(x = <x_column>, y = <y_column>, gridsize = <size>)
 '''
 
 import pandas as pd
@@ -789,7 +789,52 @@ plt.show() # Display the plot
 
 
 #--------------------------------------------------------------------------------------------------------#
-#------------------------------------------- 8. Line plot -----------------------------------------------#
+#------------------------------------------ 8. Hexbin plot ----------------------------------------------#
+#--------------------------------------------------------------------------------------------------------#
+'''
+Hexbin plot is a two-dimensional histogram 
+that uses hexagonal bins to represent the density of points in a scatter plot, 
+useful for visualizing the relationship between two continuous variables, especially with large datasets.
+'''
+
+##################################
+##   df.plot(kind = "hexbin")   ##
+##################################
+
+# Draw hexbin plot of "Attack" vs "Defense" columns
+df_pokemon.plot(
+    kind = "hexbin",
+    x = "Attack",                 # x-axis variable
+    y = "Defense",                # y-axis variable
+    gridsize = 25,                # Number of hexagons in the x-direction
+    cmap = "Blues",               # Color map for the hexagons
+    title = "Hexbin Plot of Pokemon Attack vs Defense",  # Title of the plot
+    xlabel = "Attack",            # Label for the x-axis
+    ylabel = "Defense",           # Label for the y-axis
+    figsize = (10, 6)             # Size of the figure
+)
+plt.show() # Display the plot
+
+############################
+##    df.plot.hexbin()    ##
+############################
+
+# Draw hexbin plot of "Attack" vs "Defense" columns
+df_pokemon.plot.hexbin(
+    x = "Attack",                 # x-axis variable
+    y = "Defense",                # y-axis variable
+    gridsize = 25,                # Number of hexagons in the x-direction
+    cmap = "viridis",             # Color map for the hexagons
+    title = "Hexbin Plot of Pokemon Attack vs Defense",  # Title of the plot
+    xlabel = "Attack",            # Label for the x-axis
+    ylabel = "Defense",           # Label for the y-axis
+    figsize = (10, 6)             # Size of the figure
+)
+plt.show() # Display the plot
+
+
+#--------------------------------------------------------------------------------------------------------#
+#------------------------------------------- 9. Line plot -----------------------------------------------#
 #--------------------------------------------------------------------------------------------------------#
 '''
 Line plot is a graphical representation of data points connected by straight lines,
@@ -916,3 +961,99 @@ plt.show() # Display the plot
     )
 )
 plt.show() # Display the plot
+
+
+#--------------------------------------------------------------------------------------------------------#
+#------------------------------------------ 10. Area plot -----------------------------------------------#
+#--------------------------------------------------------------------------------------------------------#
+'''
+Area plot is a graphical representation of data where the area between the line and the x-axis is filled,
+often used to visualize cumulative totals over time or ordered categories.
+
+Pandas also supports stacked and unstacked area plots by setting stacked = True/False.
+'''
+
+df_business = pd.DataFrame({
+    'sales': [3, 2, 3, 9, 10, 6],
+    'signups': [5, 5, 6, 12, 14, 13],
+    'visits': [20, 42, 28, 62, 81, 50],
+}, index=pd.date_range(start='2018/01/01', end='2018/07/01',
+                       freq='ME'))
+
+print(df_business)
+#             sales  signups  visits
+# 2018-01-31      3        5      20
+# 2018-02-28      2        5      42
+# 2018-03-31      3        6      28
+# 2018-04-30      9       12      62
+# 2018-05-31     10       14      81
+# 2018-06-30      6       13      50
+
+##################################
+##    df.plot(kind = "area")    ##
+##################################
+
+#----------
+## Draw stacked (default) area plot of all columns
+#----------
+
+df_business.plot(
+    kind = "area",
+    color = ["skyblue", "orange", "green"], # Colors for each category
+    alpha = 0.5,                  # Transparency level (0 to 1)
+    title = "Unstacked Area Plot of Business Metrics Over Time",  # Title of the plot
+    xlabel = "Date",              # Label for the x-axis
+    ylabel = "Value",             # Label for the y-axis
+    figsize = (10, 6)             # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw unstacked area plot of all columns
+#----------
+
+df_business.plot(
+    kind = "area",
+    stacked = False,              # Unstacked area plot
+    color = ["skyblue", "orange", "green"], # Colors for each category
+    alpha = 0.5,                  # Transparency level (0 to 1)
+    title = "Unstacked Area Plot of Business Metrics Over Time",  # Title of the plot
+    xlabel = "Date",              # Label for the x-axis
+    ylabel = "Value",             # Label for the y-axis
+    figsize = (10, 6)             # Size of the figure
+)
+plt.show() # Display the plot
+
+##########################
+##    df.plot.area()    ##
+##########################
+
+#----------
+## Draw stacked (default) area plot of all columns
+#----------
+
+df_business.plot.area(
+    color = ["skyblue", "orange", "green"], # Colors for each category
+    alpha = 0.5,                  # Transparency level (0 to 1)
+    title = "Unstacked Area Plot of Business Metrics Over Time",  # Title of the plot
+    xlabel = "Date",              # Label for the x-axis
+    ylabel = "Value",             # Label for the y-axis
+    figsize = (10, 6)             # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw unstacked area plot of all columns
+#----------
+
+df_business.plot.area(
+    stacked = False,              # Unstacked area plot
+    color = ["skyblue", "orange", "green"], # Colors for each category
+    alpha = 0.5,                  # Transparency level (0 to 1)
+    title = "Unstacked Area Plot of Business Metrics Over Time",  # Title of the plot
+    xlabel = "Date",              # Label for the x-axis
+    ylabel = "Value",             # Label for the y-axis
+    figsize = (10, 6)             # Size of the figure
+)
+plt.show() # Display the plot
+
