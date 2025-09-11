@@ -24,7 +24,7 @@ Draw basic plots using DataFrame.plot() method or DataFrame.plot.<plotting_metho
    + df.plot(kind = "bar")
    + df.plot.bar()
 
-6. Barh plot (horizontal): 
+6. Horizontal Bar plot: 
    + df.plot(kind = "barh")
    + df.plot.barh()
 
@@ -480,4 +480,265 @@ type2_counts.plot.pie(
     ax = axes[1]                  # Second subplot
 )
 
+plt.show() # Display the plot
+
+
+#--------------------------------------------------------------------------------------------------------#
+#------------------------------------------ 5. Bar plot -------------------------------------------------#
+#--------------------------------------------------------------------------------------------------------#
+'''
+Bar plot is a graphical representation of categorical data using rectangular bars, 
+where the length of each bar is proportional to the value it represents.
+
+Pandas also supports stacked and dodged bar plots by setting stacked = True/False.
+'''
+
+#################################
+##    df.plot(kind = "bar")    ##
+#################################
+
+#----------
+## Draw bar plot of "Generation" column
+#----------
+
+generation_counts = df_pokemon['Generation'].value_counts().sort_index()
+
+generation_counts.plot(
+    kind = "bar",
+    color = "green",             # Color of the bars
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Bar Plot of Pokemon Generation",  # Title of the plot
+    xlabel = "Generation",         # Label for the x-axis
+    ylabel = "Count",              # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw dodged bar plot of "Generation" and "Legendary" columns
+#----------
+
+gen_legd_counts = pd.crosstab(df_pokemon['Generation'], df_pokemon['Legendary'])
+# Legendary   False  True 
+# Generation              
+# 1             160      6
+# 2             101      5
+# 3             142     18
+# 4             108     13
+# 5             150     15
+# 6              74      8
+
+gen_legd_counts.plot(
+    kind = "bar",
+    stacked = False,             # Dodged bar plot
+    color = ["green", "brown"], # Colors for each category
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Bar Plot of Pokemon Generation and Legendary Status",  # Title of the plot
+    xlabel = "Generation",         # Label for the x-axis
+    ylabel = "Count",              # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw stacked bar plot of "Generation" and "Legendary" columns
+#----------
+
+gen_legd_counts = pd.crosstab(df_pokemon['Generation'], df_pokemon['Legendary'])
+
+gen_legd_counts.plot(
+    kind = "bar",
+    stacked = True,              # Stacked bar plot
+    color = ["green", "brown"], # Colors for each category
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Stacked Bar Plot of Pokemon Generation and Legendary Status",  # Title of the plot
+    xlabel = "Generation",         # Label for the x-axis
+    ylabel = "Count",              # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+#########################
+##    df.plot.bar()    ##
+#########################
+
+#----------
+## Draw bar plot of "Generation" column
+#----------
+
+generation_counts = df_pokemon['Generation'].value_counts().sort_index()
+
+generation_counts.plot.bar(
+    color = "green",             # Color of the bars
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Bar Plot of Pokemon Generation",  # Title of the plot
+    xlabel = "Generation",         # Label for the x-axis
+    ylabel = "Count",              # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw dodged bar plot of "Generation" and "Legendary" columns
+#----------
+
+gen_legd_counts = pd.crosstab(df_pokemon['Generation'], df_pokemon['Legendary'])
+
+gen_legd_counts.plot.bar(
+    stacked = False,             # Dodged bar plot
+    color = ["green", "brown"], # Colors for each category
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Bar Plot of Pokemon Generation and Legendary Status",  # Title of the plot
+    xlabel = "Generation",         # Label for the x-axis
+    ylabel = "Count",              # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw stacked bar plot of "Generation" and "Legendary" columns
+#----------
+
+gen_legd_counts = pd.crosstab(df_pokemon['Generation'], df_pokemon['Legendary'])
+
+gen_legd_counts.plot.bar(
+    stacked = True,              # Stacked bar plot
+    color = ["green", "brown"], # Colors for each category
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Stacked Bar Plot of Pokemon Generation and Legendary Status",  # Title of the plot
+    xlabel = "Generation",         # Label for the x-axis
+    ylabel = "Count",              # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+
+#--------------------------------------------------------------------------------------------------------#
+#---------------------------------------- 6. Horizontal Bar plot ----------------------------------------#
+#--------------------------------------------------------------------------------------------------------#
+'''
+Horizontal bar plot is similar to a vertical bar plot, but the bars are oriented horizontally.
+'''
+
+#################################
+##   df.plot(kind = "barh")    ##
+#################################
+
+#----------
+## Draw horizontal bar plot of "Generation" column
+#----------
+
+generation_counts = df_pokemon['Generation'].value_counts().sort_index()
+
+generation_counts.plot(
+    kind = "barh",
+    color = "orange",             # Color of the bars
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Horizontal Bar Plot of Pokemon Generation",  # Title of the plot
+    xlabel = "Count",              # Label for the x-axis
+    ylabel = "Generation",         # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw dodged horizontal bar plot of "Generation" and "Legendary" columns
+#----------
+
+gen_legd_counts = pd.crosstab(df_pokemon['Generation'], df_pokemon['Legendary'])
+
+gen_legd_counts.plot(
+    kind = "barh",
+    stacked = False,             # Dodged horizontal bar plot
+    color = ["orange", "purple"], # Colors for each category
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Horizontal Bar Plot of Pokemon Generation and Legendary Status",  # Title of the plot
+    xlabel = "Count",              # Label for the x-axis
+    ylabel = "Generation",         # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw stacked horizontal bar plot of "Generation" and "Legendary" columns
+#----------
+
+gen_legd_counts = pd.crosstab(df_pokemon['Generation'], df_pokemon['Legendary'])
+
+gen_legd_counts.plot(
+    kind = "barh",
+    stacked = True,              # Stacked horizontal bar plot
+    color = ["orange", "purple"], # Colors for each category
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Stacked Horizontal Bar Plot of Pokemon Generation and Legendary Status",  # Title of the plot
+    xlabel = "Count",              # Label for the x-axis
+    ylabel = "Generation",         # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+##########################
+##    df.plot.barh()    ##
+##########################
+
+#----------
+## Draw horizontal bar plot of "Generation" column
+#----------
+
+generation_counts = df_pokemon['Generation'].value_counts().sort_index()
+
+generation_counts.plot.barh(
+    color = "orange",             # Color of the bars
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Horizontal Bar Plot of Pokemon Generation",  # Title of the plot
+    xlabel = "Count",              # Label for the x-axis
+    ylabel = "Generation",         # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw dodged horizontal bar plot of "Generation" and "Legendary" columns
+#----------
+
+gen_legd_counts = pd.crosstab(df_pokemon['Generation'], df_pokemon['Legendary'])
+
+gen_legd_counts.plot.barh(
+    stacked = False,             # Dodged horizontal bar plot
+    color = ["orange", "purple"], # Colors for each category
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Horizontal Bar Plot of Pokemon Generation and Legendary Status",  # Title of the plot
+    xlabel = "Count",              # Label for the x-axis
+    ylabel = "Generation",         # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
+plt.show() # Display the plot
+
+#----------
+## Draw stacked horizontal bar plot of "Generation" and "Legendary" columns
+#----------
+
+gen_legd_counts = pd.crosstab(df_pokemon['Generation'], df_pokemon['Legendary'])
+
+gen_legd_counts.plot.barh(
+    stacked = True,              # Stacked horizontal bar plot
+    color = ["orange", "purple"], # Colors for each category
+    edgecolor = "black",           # Color of the bar edges
+    alpha = 0.7,                   # Transparency level (0 to 1)
+    title = "Stacked Horizontal Bar Plot of Pokemon Generation and Legendary Status",  # Title of the plot
+    xlabel = "Count",              # Label for the x-axis
+    ylabel = "Generation",         # Label for the y-axis
+    figsize = (10, 6)              # Size of the figure
+)
 plt.show() # Display the plot
