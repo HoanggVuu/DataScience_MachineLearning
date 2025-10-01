@@ -344,3 +344,71 @@ print(
 # 7      40        2       P007     125      77
 # 8      40        3       P007     137      63
 # 9      48        1       P003     120      61
+
+#---------------------------------------------------------------------------------------------------------#
+#---------------------------------------------- 3. Cross-Table -------------------------------------------#
+#---------------------------------------------------------------------------------------------------------#
+'''
+A cross-tabulation (or cross-tab) is a table that displays the frequency distribution of variables.
+It is used to analyze the relationship between two or more categorical variables (Chi-squared test).
+
+A cross-table is also called a contingency table or frequency table.
+'''
+
+##############################
+## Create example DataFrame ##
+##############################
+
+n_resp = 250
+
+np.random.seed(42)
+df_survey = pd.DataFrame({
+    'respondent_id'   : range(1, n_resp+1),
+    
+    'gender'          : np.random.choice(['Male', 'Female', 'Other'], size=n_resp,
+                                          p=[0.48, 0.48, 0.04]),
+
+    'favorite_color'  : np.random.choice(['Red', 'Blue', 'Green', 'Yellow', 'Purple'],
+                                          size=n_resp),
+
+    'purchase_intent' : np.random.choice(['Definitely', 'Probably', 'Maybe', 'Unlikely', 'Never'], 
+                                          size=n_resp,
+                                         p=[0.15, 0.25, 0.30, 0.20, 0.10])
+})
+
+df_survey.head()
+#    respondent_id   gender favorite_color purchase_intent
+#          <int64> <object>       <object>        <object>
+# 0              1     Male         Purple        Probably
+# 1              2   Female         Purple        Unlikely
+# 2              3   Female            Red           Never
+# 3              4   Female          Green           Never
+# 4              5     Male           Blue        Unlikely
+
+######################
+## dr.table() usage ##
+######################
+
+print(
+    dr.table(df_survey['gender'], df_survey['favorite_color'])
+)
+#           Blue   Green  Purple     Red  Yellow
+# col_0                                         
+# row_0  <int64> <int64> <int64> <int64> <int64>
+# Female      24      19      31      21      26
+# Male        35      15      25      23      21
+# Other        1       4       2       3       0
+
+print(
+    dr.table(df_survey[['gender', 'purchase_intent']])
+)
+#                  Definitely   Maybe   Never  Probably  Unlikely
+# purchase_intent                                                
+# gender              <int64> <int64> <int64>   <int64>   <int64>
+# Female                   23      35      16        29        18
+# Male                     16      38      13        30        22
+# Other                     1       3       1         5         0
+
+'''
+dr.table() cannot handle more than 2 variables at once (only pd.crosstab() can).
+'''
