@@ -69,11 +69,20 @@ it liberates us from typing the DataFrame name repeatedly (like df[df['A'] > 1])
 This also supports pandas DataFrame
 '''
 
+from pipda import register_verb
+
+dr.filter = register_verb(func = dr.filter_)
+
+'''
+dr.filter_() to avoid conflict with Python built-in function filter()
+=> Use registter_verb to bring it back as dr.filter()
+'''
+
 #################
 ## with tibble ##
 #################
 
-filtered_tb = tb >> dr.filter_(f.x > 1)
+filtered_tb = tb >> dr.filter(f.x > 1)
 print(filtered_tb)
 #         x        y      z
 #   <int64> <object> <bool>
@@ -106,7 +115,7 @@ THIS WILL NOT WORK
 ## with pandas df ##
 ####################
 
-filtered_df = df >> dr.filter_(f.A > 1)
+filtered_df = df >> dr.filter(f.A > 1)
 print(filtered_df)
 #         A        B      C
 #   <int64> <object> <bool>

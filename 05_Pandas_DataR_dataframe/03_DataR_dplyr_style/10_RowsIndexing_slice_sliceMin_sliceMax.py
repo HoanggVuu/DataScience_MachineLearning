@@ -1,5 +1,5 @@
 '''
-1. dr.slice_(): allows selecting rows by their positions (indices).
+1. dr.slice(): allows selecting rows by their positions (indices).
    + Basic usage: dr.slice_(index1, index2, ...)
    + Range indexing: dr.slice_(dr.c[start:end]) to select rows from start to end-1.
 
@@ -38,9 +38,18 @@ print(df_baseball.head())
 # 4      Chris_Gomez        BAL  First_Baseman      73     188     35.71   Infielder
 
 
-#------------------------------------------------------------------------------------------------------------#
-#------------------------------------------ 1. dr.slice_(...) -----------------------------------------------#
-#------------------------------------------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------------------------------------#
+#------------------------------------------ 1. dr.slice(...) -----------------------------------------------#
+#-----------------------------------------------------------------------------------------------------------#
+
+from pipda import register_verb
+
+dr.slice = register_verb(func = dr.slice_)
+
+'''
+dr.slice_() to avoid conflict with Python built-in function slice()
+=> Use registter_verb to bring it back as dr.slice()
+'''
 
 #################
 ## Basic usage ##
@@ -48,7 +57,7 @@ print(df_baseball.head())
 
 print(
     df_baseball 
-    >> dr.slice_(0)
+    >> dr.slice(0)
 )
 #             Name       Team   Position  Height  Weight       Age PosCategory
 #         <object> <category> <category> <int64> <int64> <float64>  <category>
@@ -56,7 +65,7 @@ print(
 
 print(
     df_baseball 
-    >> dr.slice_(0, 2, 5, 9)
+    >> dr.slice(0, 2, 5, 9)
 )
 #               Name       Team        Position  Height  Weight       Age PosCategory
 #           <object> <category>      <category> <int64> <int64> <float64>  <category>
@@ -67,7 +76,7 @@ print(
 
 print(
     df_baseball 
-    >> dr.slice_(-1, -2)
+    >> dr.slice(-1, -2)
 )
 #                Name       Team        Position  Height  Weight       Age PosCategory
 #            <object> <category>      <category> <int64> <int64> <float64>  <category>
@@ -80,7 +89,7 @@ print(
 
 print(
     df_baseball 
-    >> dr.slice_(dr.c[0:4])
+    >> dr.slice(dr.c[0:4])
 )
 #               Name       Team       Position  Height  Weight       Age PosCategory
 #           <object> <category>     <category> <int64> <int64> <float64>  <category>
@@ -91,7 +100,7 @@ print(
 
 print(
     df_baseball 
-    >> dr.slice_(dr.c[:3])
+    >> dr.slice(dr.c[:3])
 )
 #               Name       Team   Position  Height  Weight       Age PosCategory
 #           <object> <category> <category> <int64> <int64> <float64>  <category>
@@ -101,7 +110,7 @@ print(
 
 print(
     df_baseball 
-    >> dr.slice_(dr.c[1010:])
+    >> dr.slice(dr.c[1010:])
 )
 #                 Name       Team        Position  Height  Weight       Age PosCategory
 #             <object> <category>      <category> <int64> <int64> <float64>  <category>
@@ -113,7 +122,7 @@ print(
 
 print(
     df_baseball 
-    >> dr.slice_(dr.c[0:10:2])
+    >> dr.slice(dr.c[0:10:2])
 )
 #               Name       Team       Position  Height  Weight       Age PosCategory
 #           <object> <category>     <category> <int64> <int64> <float64>  <category>

@@ -1,4 +1,4 @@
-''' dr.filter_()
+''' dr.filter()
 
 1. Single Condition Examples:
    + Logic Operators: >, <, >=, <=, .between(), ==, !=
@@ -18,6 +18,9 @@
 import datar.all as dr
 from datar import f
 import pandas as pd
+
+from pipda import register_verb
+dr.filter = register_verb(func = dr.filter_)
 
 # Suppress all warnings
 import warnings
@@ -68,7 +71,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Attack > 150)
+    >> dr.filter(f.Attack > 150)
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Attack, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -83,7 +86,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Sp_Atk > f.Attack*2)
+    >> dr.filter(f.Sp_Atk > f.Attack*2)
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Attack, f.Sp_Atk, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -102,7 +105,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Speed < 15)
+    >> dr.filter(f.Speed < 15)
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Speed, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -117,7 +120,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Defense < f.Attack*0.5)
+    >> dr.filter(f.Defense < f.Attack*0.5)
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Attack, f.Defense, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -146,7 +149,7 @@ inclusive = "right": (left, right] or left < x <= right
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Defense.between(100, 150, inclusive = "both"))
+    >> dr.filter(f.Defense.between(100, 150, inclusive = "both"))
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Defense, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -165,7 +168,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Type_1 == 'Fire')
+    >> dr.filter(f.Type_1 == 'Fire')
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -184,7 +187,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Type_1 != 'Fire')
+    >> dr.filter(f.Type_1 != 'Fire')
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -203,7 +206,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Type_1.isin(['Fire', 'Water'])) # Type_1 in the list ['Fire', 'Water']
+    >> dr.filter(f.Type_1.isin(['Fire', 'Water'])) # Type_1 in the list ['Fire', 'Water']
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Legendary)
     >> dr.slice_tail(n=5)
 )
@@ -218,7 +221,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Generation.isin(['4', '6'])) # Generation in the list ['4', '6']
+    >> dr.filter(f.Generation.isin(['4', '6'])) # Generation in the list ['4', '6']
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Generation, f.Legendary)
 )
 #                     Name     Type_1     Type_2   Total Generation  Legendary
@@ -242,7 +245,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Name.str.contains('Mega')) # Name contains the substring 'Mega'
+    >> dr.filter(f.Name.str.contains('Mega')) # Name contains the substring 'Mega'
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -257,7 +260,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Name.str.startswith('Tor')) # Name starts with the substring 'Tor'
+    >> dr.filter(f.Name.str.startswith('Tor')) # Name starts with the substring 'Tor'
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -272,7 +275,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(f.Name.str.endswith('ite')) # Name ends with the substring 'ite'
+    >> dr.filter(f.Name.str.endswith('ite')) # Name ends with the substring 'ite'
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -298,7 +301,7 @@ tb_emp = dr.tibble(
 
 print(
     tb_emp
-    >> dr.filter_(f.start_date.dt.is_month_start)
+    >> dr.filter(f.start_date.dt.is_month_start)
 )
 #        id     name    salary       start_date     dept
 #   <int64> <object> <float64> <datetime64[ns]> <object>
@@ -306,7 +309,7 @@ print(
 
 print(
     tb_emp
-    >> dr.filter_(f.start_date.dt.is_leap_year)
+    >> dr.filter(f.start_date.dt.is_leap_year)
 )
 #        id     name    salary       start_date     dept
 #   <int64> <object> <float64> <datetime64[ns]> <object>
@@ -319,7 +322,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(~(f.Type_1 == 'Fire')) # Type_1 not equal to 'Fire'
+    >> dr.filter(~(f.Type_1 == 'Fire')) # Type_1 not equal to 'Fire'
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -334,7 +337,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(~f.Type_2.isin(['Flying', 'Dragon'])) # Type_2 not in the list ['Flying', 'Dragon']
+    >> dr.filter(~f.Type_2.isin(['Flying', 'Dragon'])) # Type_2 not in the list ['Flying', 'Dragon']
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -359,7 +362,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_((f.Type_1 == 'Fire') & (f.Attack > 100)) # Type_1 equal to 'Fire' AND Attack greater than 100
+    >> dr.filter((f.Type_1 == 'Fire') & (f.Attack > 100)) # Type_1 equal to 'Fire' AND Attack greater than 100
     >> dr.select(f.Name, f.Type_1, f.Attack)
     >> dr.slice_head(n=5)
 )
@@ -374,7 +377,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_((f.Type_1 == 'Fire') & (f.Attack > 100) & (f.Generation == "5"))
+    >> dr.filter((f.Type_1 == 'Fire') & (f.Attack > 100) & (f.Generation == "5"))
     >> dr.select(f.Name, f.Type_1, f.Attack, f.Generation, f.Legendary)
     >> dr.slice_head(n=5)
 )
@@ -391,7 +394,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_((f.Type_1 == 'Fire') | (f.Type_1 == 'Water')) # Type_1 equal to 'Fire' OR Type_1 equal to 'Water'
+    >> dr.filter((f.Type_1 == 'Fire') | (f.Type_1 == 'Water')) # Type_1 equal to 'Fire' OR Type_1 equal to 'Water'
     >> dr.select(f.Name, f.Type_1, f.Type_2, f.Total, f.Legendary)
 )
 #                           Name     Type_1     Type_2   Total  Legendary
@@ -411,7 +414,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_((f.Attack > f.Defense) | (f.Sp_Atk <= f.Sp_Def))
+    >> dr.filter((f.Attack > f.Defense) | (f.Sp_Atk <= f.Sp_Def))
     >> dr.select(f.Name, f.Attack, f.Defense, f.Sp_Atk, f.Sp_Def)
     >> dr.slice_head(n=5)
 )
@@ -430,7 +433,7 @@ print(
 
 print(
     tb_pokemon
-    >> dr.filter_(
+    >> dr.filter(
         ((f.Type_1 == 'Fire') | (f.Type_1 == 'Water')) & (f.Attack > 100)
     ) # (Type_1 equal to 'Fire' OR Type_1 equal to 'Water') AND Attack greater than 100
     >> dr.select(f.Name, f.Type_1, f.Attack, f.Legendary)
@@ -471,7 +474,7 @@ print(tb_lifexp.columns)
 
 print(
     tb_lifexp
-    >> dr.filter_((f['Life expectancy '] > 80) & (f[' thinness 5-9 years'] <= 2) & (f.Year == 2015))
+    >> dr.filter((f['Life expectancy '] > 80) & (f[' thinness 5-9 years'] <= 2) & (f.Year == 2015))
     >> dr.select(f.Country, f.Year, f['Life expectancy '], f[' thinness 5-9 years'])
     >> dr.slice_head(n=5)
 )
